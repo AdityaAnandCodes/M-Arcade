@@ -16,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${openSans.variable} antialiased`}>
+      <body className={`${openSans.variable} antialiased bg-gray-900`}>
         <Navbar />
         {children}
       </body>

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 const games = [
-  { id: '1', name: 'zombie' },
+  { id: '1', name: 'memorymatch' },
   { id: '2', name: 'slotmachine' },
   
 ];

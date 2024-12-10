@@ -5,6 +5,12 @@
 
 *{
   font-family: "Roboto", sans-serif;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+*::-webkit-scrollbar {
+  display: none;
 }
 
 .logo{

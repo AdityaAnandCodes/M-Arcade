@@ -1,6 +1,11 @@
+import Home from "./pages/Home"
+
 const App = () => {
   return (
-    <div>App</div>
+    <main className="min-h-screen w-full">
+
+      <Home />
+    </main>
   )
 }
 

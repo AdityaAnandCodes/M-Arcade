@@ -63,7 +63,7 @@ const RetroShape = ({ position, rotation, color }) => {
 
 const SceneBackground = () => {
   const shapes = useMemo(() => {
-    const shapeCount = 100;
+    const shapeCount = 20;
     return Array.from({ length: shapeCount }).map(() => ({
       position: [
         Math.random() * 50 - Math.random() * 50, 
@@ -164,7 +164,7 @@ const AnimatedScene = () => {
 
       <EffectComposer>
         <Bloom 
-          intensity={0.5} 
+          intensity={0.8} 
           kernelSize={3} 
           luminanceThreshold={0.2} 
           luminanceSmoothing={0.1} 
@@ -192,14 +192,20 @@ const AnimatedScene = () => {
 
 const Hero = () => {
   return (
-    <section className="max-h-screen flex flex-col items-center p-8">
-      <div className="logo text-9xl max-h-fit mb-8">M-Arcade</div>
-      <div className="relative h-dvh w-fit bg-black rounded-[80px] overflow-hidden">
-        <Canvas>
-          <AnimatedScene />
-        </Canvas>
-      </div>
-    </section>
+    <section className="min-h-screen max-sm:max-h-screen flex flex-col items-center p-8">
+  <div className="logo text-6xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-9xl max-h-fit mb-4">
+    M-Arcade
+  </div>
+  <p className="text-center text-yl font-sans font-extralight italic text-xs max-sm:mb-2 sm:text-base md:text-sm lg:text-base xl:text-lg">
+    Dive into the future of gaming! Stake, play, and earn on M-Arcade, where Web3 meets endless fun and rewards.
+  </p>
+  <div className="relative h-dvh w-full bg-black rounded-[80px] max-sm:rounded-[60px] overflow-hidden">
+    <Canvas>
+      <AnimatedScene />
+    </Canvas>
+  </div>
+</section>
+
   );
 };
 

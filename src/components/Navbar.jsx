@@ -9,7 +9,7 @@ const Navbar = () => {
   };
 
   return (
-    <section className="w-full flex justify-between items-center p-4 sm:px-6 md:px-8">
+    <section className="w-full flex justify-between items-center p-4 sm:px-6 md:px-8 z-10">
       {/* Logo */}
       <div className="logo text-2xl sm:text-3xl md:text-4xl font-bold">M-Arcade</div>
 

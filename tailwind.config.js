@@ -9,6 +9,8 @@ export default {
       colors:{
         pl:'#bb77fe',
         yl:'#fffe52',
+        sk:'#b5ebf7',
+        db:'#050197',
       },
     },
   },

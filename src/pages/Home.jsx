@@ -1,12 +1,11 @@
-import Navbar from "../components/Navbar"
+import Navbar from "../components/Navbar";
 
 const Home = () => {
   return (
     <main className="bg-pl min-h-screen text-yl">
-        <Navbar />
-
+      <Navbar />
     </main>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

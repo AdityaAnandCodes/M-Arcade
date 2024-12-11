@@ -17,6 +17,13 @@
   font-family: "Modak", serif;
   font-weight: 400;
   font-style: normal;
+  font-stretch: expanded;
+  letter-spacing: 5px;
+  
+}
+nav .logo{
+  letter-spacing: 1px;
+
 }
 :root {
   --pl: #bb77fe; /* Example color */

@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 const SnakeGame = () => {
-  const BOARD_WIDTH = 20; // Number of cells in width
-  const BOARD_HEIGHT = 20; // Number of cells in height
+  const BOARD_WIDTH = 20; // Number of cells horizontally
+  const BOARD_HEIGHT = 20; // Number of cells vertically
   const CELL_SIZE = 20; // Size of each cell in pixels
+
+  const BOARD_PIXEL_WIDTH = BOARD_WIDTH * CELL_SIZE;
+  const BOARD_PIXEL_HEIGHT = BOARD_HEIGHT * CELL_SIZE;
   const INITIAL_SPEED = 200; // Initial speed in milliseconds
 
   const [snake, setSnake] = useState([
@@ -16,13 +19,15 @@ const SnakeGame = () => {
   const [speed, setSpeed] = useState(INITIAL_SPEED);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
   const generateFood = useCallback(() => {
     let newFood;
     do {
       newFood = {
-        x: Math.floor(Math.random() * BOARD_WIDTH),
-        y: Math.floor(Math.random() * BOARD_HEIGHT),
+        x: Math.floor(Math.random() * (BOARD_WIDTH - 1)),
+        y: Math.floor(Math.random() * (BOARD_HEIGHT - 1)),
       };
     } while (
       snake.some(
@@ -130,12 +135,39 @@ const SnakeGame = () => {
     setGameOver(false);
   };
 
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    setTouchStart({ x: touch.clientX, y: touch.clientY });
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!touchStart) return;
+
+    const touch = e.changedTouches[0];
+    setTouchEnd({ x: touch.clientX, y: touch.clientY });
+
+    const deltaX = touch.clientX - touchStart.x;
+    const deltaY = touch.clientY - touchStart.y;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 0 && direction !== "LEFT") setDirection("RIGHT");
+      else if (deltaX < 0 && direction !== "RIGHT") setDirection("LEFT");
+    } else {
+      if (deltaY > 0 && direction !== "UP") setDirection("DOWN");
+      else if (deltaY < 0 && direction !== "DOWN") setDirection("UP");
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#90e0ef]">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen bg-[#90e0ef]"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       <div className="mb-4">
-        <h1 className="text-3xl font-bold text-[#0077b6]">Snake Game</h1>
-        <div className="text-xl mt-2 text-[#0077b6]">
-          Score: <span className="font-bold text-[#003049]">{score}</span>
+        <h1 className="text-3xl font-bold text-[#03045e]">Snake Game</h1>
+        <div className="text-xl mt-2 text-[#03045e]">
+          Score: <span className="font-bold text-[#03045e]">{score}</span>
         </div>
       </div>
 
@@ -155,8 +187,8 @@ const SnakeGame = () => {
       <div
         className="relative border-4 border-[#0077b6]"
         style={{
-          width: `${BOARD_WIDTH * CELL_SIZE}px`,
-          height: `${BOARD_HEIGHT * CELL_SIZE}px`,
+          width: `${BOARD_PIXEL_WIDTH + 4}px`, // Adjust for border size
+          height: `${BOARD_PIXEL_HEIGHT + 4}px`,
           backgroundColor: "#90e0ef",
         }}
       >
@@ -188,9 +220,8 @@ const SnakeGame = () => {
         />
       </div>
 
-      <div className="mt-4 text-sm text-[#003049]">
-        <p>Use Arrow Keys to Control the Snake</p>
-        <p>Eat Food to Grow and Increase Score</p>
+      <div className="mt-4 text-sm text-[#03045e]">
+        <p>Use Arrow Keys or Swipe to Control the Snake</p>
       </div>
     </div>
   );

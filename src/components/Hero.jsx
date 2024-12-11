@@ -8,7 +8,6 @@ import {
   Noise, 
   Vignette 
 } from '@react-three/postprocessing';
-import { BlendFunction } from 'postprocessing';
 import { ArcadeMachine } from "./ArcadeMachine";
 import gsap from 'gsap';
 import * as THREE from 'three';
@@ -171,17 +170,14 @@ const AnimatedScene = () => {
         />
 
         <ChromaticAberration 
-          blendFunction={BlendFunction.NORMAL} 
           offset={[0.0005, 0.0009]} 
         />
 
         <Noise
-          blendFunction={BlendFunction.SOFT_LIGHT} 
-          opacity={0.2} 
+          opacity={0.1} 
         />
 
         <Vignette 
-          blendFunction={BlendFunction.NORMAL} 
           offset={0.5} 
           darkness={0.5} 
         />

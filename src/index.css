@@ -5,10 +5,26 @@
 
 *{
   font-family: "Roboto", sans-serif;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+*::-webkit-scrollbar {
+  display: none;
 }
 
 .logo{
   font-family: "Modak", serif;
   font-weight: 400;
   font-style: normal;
+}
+:root {
+  --pl: #bb77fe; /* Example color */
+  --yl: #fffe52; /* Example color */
+  --sk: #b5ebf7; /* Example color */
+  --db: #050197; /* Example color */
+}
+
+.about-content{
+  font-weight: 100;
 }

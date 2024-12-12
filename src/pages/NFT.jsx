@@ -4,7 +4,7 @@ import React from 'react'
 const NFT = () => {
   return (
     <section className='min-h-screen bg-black text-white flex justify-center items-center'>
-        <Timer  className='w-64 h-auto' />
+        <Brain  className='w-64 h-auto' />
 
     </section>
   )

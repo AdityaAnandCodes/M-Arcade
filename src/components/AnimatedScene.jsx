@@ -151,11 +151,11 @@ const AnimatedScene = () => {
       />
       
       <ambientLight intensity={1.0} />
-      <pointLight color='yellow' position={[10, 10, 10]} intensity={100} />
-      <pointLight color='yellow' position={[-10, 10, 10]} intensity={100} />
-      <pointLight color='white' position={[0, -10, 10]} intensity={100} />
+      <pointLight color='orange' position={[10, 10, 10]} intensity={100} />
+      <pointLight color='orange' position={[-10, 10, 10]} intensity={100} />
+      <pointLight color='yellow' position={[0, -10, 10]} intensity={100} />
       <pointLight color='orange' position={[0, 10, 10]} intensity={100} />
-      <pointLight color='orange' position={[0, -10, 10]} intensity={200} />
+      <pointLight color='white' position={[0, -10, 10]} intensity={200} />
       {/* Background Shapes */}
       <SceneBackground />
       

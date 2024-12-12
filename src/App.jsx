@@ -6,6 +6,7 @@ import MemoryMatch from "./games/MemoryMatch";
 import ProceduralMazeGame from "./games/Maze";
 import SnakeGame from "./games/SnakeGame";
 import PingPongGame from "./games/PingPong";
+import NFT from "./pages/NFT";
 
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/maze" element={<ProceduralMazeGame />} />
           <Route path="/snake" element={<SnakeGame />} />
           <Route path="/pingpong" element={<PingPongGame />} />
+          <Route path="/nft" element={<NFT />} />
 
         </Routes>
       </section>

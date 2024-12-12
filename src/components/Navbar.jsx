@@ -37,9 +37,11 @@ const Navbar = () => {
           <Circle className="w-3 h-3" /> Games
         </div>
         </Link>
+        <Link to='/nft'>
         <div className="flex gap-2 justify-center items-center">
           <Circle className="w-3 h-3" /> Shop
         </div>
+        </Link>
         {/* Sign Up Button inside Mobile Menu */}
         <div className="p-2 px-3 sm:hidden rounded-3xl border border-yl text-sm sm:text-base md:text-lg mt-4 sm:mt-0">
           Sign Up

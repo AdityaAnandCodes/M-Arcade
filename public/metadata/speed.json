@@ -1,0 +1,19 @@
+{
+  "name": "Speed",
+  "description": "Awarded to those who complete challenges at lightning speed. A testament to quick reflexes and unmatched agility.",
+  "image": "https://aqua-rare-worm-454.mypinata.cloud/ipfs/bafybeigijhspbhcmbtlvuwbq37ypocmd4vlhlufmaj35bu4vxjzuqwfriu/timer.png",
+  "attributes": [
+    {
+      "trait_type": "Category",
+      "value": "Achievement"
+    },
+    {
+      "trait_type": "Skill",
+      "value": "Speed"
+    },
+    {
+      "trait_type": "Award",
+      "value": "Quick Completion"
+    }
+  ]
+}

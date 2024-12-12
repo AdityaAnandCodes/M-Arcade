@@ -1,0 +1,19 @@
+{
+  "name": "Brain",
+  "description": "Awarded to those who solve puzzles using brilliant logic and sharp wit. A mark of intelligence and problem-solving excellence.",
+  "image": "https://aqua-rare-worm-454.mypinata.cloud/ipfs/bafybeigijhspbhcmbtlvuwbq37ypocmd4vlhlufmaj35bu4vxjzuqwfriu/brain.png",
+  "attributes": [
+    {
+      "trait_type": "Category",
+      "value": "Achievement"
+    },
+    {
+      "trait_type": "Skill",
+      "value": "Intelligence"
+    },
+    {
+      "trait_type": "Award",
+      "value": "Strategic Thinking"
+    }
+  ]
+}

@@ -1,4 +1,3 @@
-// constants.js
 export const GAMES = [
   {
     id: 1,
@@ -7,7 +6,7 @@ export const GAMES = [
     cost: "10 Tokens",
     rewards: "NFT and up to 100 Tokens",
     image: "https://via.placeholder.com/150?text=Crypto+Clash",
-    url : "/maze",
+    url: "/maze",
   },
   {
     id: 2,
@@ -16,7 +15,7 @@ export const GAMES = [
     cost: "5 Tokens",
     rewards: "Rare Frog NFTs and 50 Tokens",
     image: "https://via.placeholder.com/150?text=Frog+Finder",
-    url: "/memorymatch"
+    url: "/memorymatch",
   },
   {
     id: 3,
@@ -25,6 +24,6 @@ export const GAMES = [
     cost: "8 Tokens",
     rewards: "Exclusive NFTs and 80 Tokens",
     image: "https://via.placeholder.com/150?text=Treasure+Hunt",
-    url : "/snake"
-  }
+    url: "/snake",
+  },
 ];

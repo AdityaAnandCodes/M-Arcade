@@ -2,9 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Stinger Fit Trial";
+  font-style: normal;
+  font-weight: bolder;
+  src: local("Stinger Fit Trial"),
+    url("/fonts/stinger-fit-trial.heavy.ttf") format("ttf");
+}
 
-*{
-  font-family: "Roboto", sans-serif;
+* {
+  font-family: "Poppins", sans-serif;
   -ms-overflow-style: none;
   scrollbar-width: none;
   scroll-behavior: smooth;
@@ -13,17 +20,15 @@
   display: none;
 }
 
-.logo{
-  font-family: "Modak", serif;
+.logo {
+  font-family: "Modak" , 'serif';
   font-weight: 400;
   font-style: normal;
   font-stretch: expanded;
   letter-spacing: 5px;
-  
 }
-nav .logo{
+nav .logo {
   letter-spacing: 1px;
-
 }
 :root {
   --pl: #bb77fe; /* Example color */
@@ -32,6 +37,14 @@ nav .logo{
   --db: #050197; /* Example color */
 }
 
-.about-content{
+.about-content {
   font-weight: 100;
+}
+
+.line-1 {
+  white-space: wrap;
+  overflow: hidden;
+}
+.anim-typewriter {
+  border-right-width: 2px;
 }

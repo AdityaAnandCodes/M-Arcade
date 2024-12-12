@@ -50,12 +50,12 @@ const RetroShape = ({ position, rotation, color }) => {
       rotation={rotation}
     >
       <dodecahedronGeometry args={[1, 0]} />
-      <meshStandardMaterial 
+      <meshStandardMaterial
         color={color} 
         transparent 
-        opacity={0.6} 
+        opacity={0.2} 
         emissive={color} 
-        emissiveIntensity={0.5}
+        emissiveIntensity={0.8}
       />
     </mesh>
   );
@@ -63,7 +63,7 @@ const RetroShape = ({ position, rotation, color }) => {
 
 const SceneBackground = () => {
   const shapes = useMemo(() => {
-    const shapeCount = 20;
+    const shapeCount = 25;
     return Array.from({ length: shapeCount }).map(() => ({
       position: [
         Math.random() * 50 - Math.random() * 50, 
@@ -150,9 +150,10 @@ const AnimatedScene = () => {
         fov={20} 
       />
       
-      <ambientLight intensity={1.5} />
-      <pointLight position={[10, 10, 10]} intensity={1} />
-      
+      <ambientLight intensity={1.0} />
+      <pointLight position={[10, 10, 10]} intensity={200} />
+      <pointLight position={[-10, 10, 10]} intensity={200} />
+      <pointLight position={[0, -10, 10]} intensity={200} />
       {/* Background Shapes */}
       <SceneBackground />
       
@@ -170,9 +171,9 @@ const AnimatedScene = () => {
           luminanceSmoothing={0.1} 
         />
 
-        <ChromaticAberration 
+        {/* <ChromaticAberration 
           offset={[0.0001, 0.0005]} 
-        />
+        /> */}
 
         <Noise
           opacity={0.01} 

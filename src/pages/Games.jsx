@@ -21,7 +21,7 @@ const Games = () => {
         <h1 className="text-4xl font-sans font-bold text-center mb-10">Available Games</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {GAMES.map((game) => (
-            <Link key={game.id} to={game.url}>
+            
             <div
               key={game.id}
               className="game-card bg-white border border-black  rounded-lg shadow-md p-6 flex flex-col justify-between hover:scale-125 duration-500 transition-all"
@@ -47,14 +47,16 @@ const Games = () => {
                     <span className="font-bold">Rewards:</span> {game.rewards}
                   </p>
                 </div>
+                <Link to={game.url}>
                 <button className="w-full bg-black text-white py-2 rounded-md hover:bg-neutral-800 transition">
                   Play Now
                 </button>
+                </Link>
                
               </div>
                
             </div>
-            </Link>
+      
             
           ))}
         </div>

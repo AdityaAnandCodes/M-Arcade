@@ -4,6 +4,7 @@ import { Rocket } from "lucide-react";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
+import Footer from "../components/Footer";
 
 const Games = () => {
   useGSAP(() => {
@@ -58,7 +59,7 @@ const Games = () => {
                   </p>
                 </div>
                 <Link to={game.url}>
-                  <button className="w-full bg-black text-white py-2 rounded-md hover:bg-neutral-800 transition">
+                  <button className="w-full bg-black text-white py-2 rounded-md hover:bg-neutral-800 hover:scale-105 duration-300 transition-all">
                     Play Now
                   </button>
                 </Link>
@@ -67,14 +68,7 @@ const Games = () => {
           ))}
         </div>
       </div>
-      <footer className="bg-black text-white py-4 mt-20">
-        <div className="container mx-auto text-center">
-          <p className="text-sm">
-            © 2024 Web3 Games Platform. All rights reserved.
-          </p>
-          <p className="text-sm">Powered by Web3 and Blockchain Technology</p>
-        </div>
-      </footer>
+      <Footer />
     </section>
   );
 };

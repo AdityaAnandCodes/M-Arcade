@@ -1,10 +1,6 @@
+import { useState, useEffect } from 'react';
 
-
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from  '@/components/ui/card';
-
-
-const Page = () => {
+const MemoryMatch = () => {
   const [cards, setCards] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [matchedPairs, setMatchedPairs] = useState([]);
@@ -109,8 +105,8 @@ const Page = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
-      <Card className="w-full max-w-md">
-        <CardContent className="p-6">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg">
+        <div className="p-6">
           <h1 className="text-2xl font-bold mb-4 text-center">Memory Matching Game</h1>
           
           {/* Game Status Display */}
@@ -156,10 +152,10 @@ const Page = () => {
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Page;
+export default MemoryMatch;

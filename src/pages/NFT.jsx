@@ -1,10 +1,10 @@
-import { Medal } from 'lucide-react'
+import { Brain, Rabbit ,Timer} from 'lucide-react'
 import React from 'react'
 
 const NFT = () => {
   return (
-    <section className='min-h-screen bg-white flex justify-center items-center'>
-        <Medal className='text-3xl' />
+    <section className='min-h-screen bg-black text-white flex justify-center items-center'>
+        <Timer  className='w-64 h-auto' />
 
     </section>
   )

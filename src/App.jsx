@@ -13,7 +13,7 @@ const App = () => {
     <Router>
       <section className="min-h-screen w-full">
         <Routes>
-          <Route path="/" element={<Home/>} />
+          <Route path="/" element={<Home2 />} />
           <Route path="/games" element={<Games />}/>
           <Route path="/memorymatch" element={<MemoryMatch />} />
           <Route path="/maze" element={<ProceduralMazeGame />} />

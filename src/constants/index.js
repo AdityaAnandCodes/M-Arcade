@@ -7,7 +7,7 @@ export const GAMES = [
     cost: "10 Tokens",
     rewards: "NFT and up to 100 Tokens",
     image: "https://via.placeholder.com/150?text=Crypto+Clash",
-    url : "",
+    url : "/maze",
   },
   {
     id: 2,
@@ -25,6 +25,6 @@ export const GAMES = [
     cost: "8 Tokens",
     rewards: "Exclusive NFTs and 80 Tokens",
     image: "https://via.placeholder.com/150?text=Treasure+Hunt",
-    url : ""
+    url : "/snake"
   }
 ];

@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import { GAMES } from "../constants/index";
 import { Rocket } from "lucide-react";
 import gsap from "gsap";
@@ -25,8 +24,6 @@ const Games = () => {
 
   return (
     <section className="min-h-screen bg-white">
-      <Navbar />
-      
       <div className="container mx-auto py-12 pt-2 px-4">
         <div className="rounded-3xl w-full bg-black h-80 mb-10 flex justify-center items-center">
           <CTA />

@@ -7,7 +7,7 @@ export const GAMES = [
     cost: "10 Tokens",
     rewards: "NFT and up to 100 Tokens",
     image: "https://via.placeholder.com/150?text=Maze+Master",
-    url: "/maze",
+    url: "/games/maze",
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ export const GAMES = [
     cost: "5 Tokens",
     rewards: "Rare Frog NFTs and 50 Tokens",
     image: "https://via.placeholder.com/150?text=Memory+Match",
-    url: "/memorymatch",
+    url: "/games/memorymatch",
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ export const GAMES = [
     cost: "8 Tokens",
     rewards: "Exclusive NFTs and 80 Tokens",
     image: "https://via.placeholder.com/150?text=Snake+Snack",
-    url: "/snake",
+    url: "/games/snake",
   },
   {
     id: 4,
@@ -34,14 +34,15 @@ export const GAMES = [
     cost: "6 Tokens",
     rewards: "Unique NFTs and 60 Tokens",
     image: "https://via.placeholder.com/150?text=Ping+Pong+Pro",
-    url: "/pingpong",
-  },{
+    url: "/games/pingpong",
+  },
+  {
     id: 5,
     title: "Candy Sweeper",
     description: "Challenge your reflexes in a thrilling ping pong game.",
     cost: "6 Tokens",
     rewards: "Unique NFTs and 60 Tokens",
     image: "https://via.placeholder.com/150?text=Ping+Pong+Pro",
-    url: "/candysweeper",
-  }
+    url: "/games/candysweeper",
+  },
 ];

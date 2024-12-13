@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { ethers } from "ethers";
+import { ethers, parseEther } from "ethers";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants_contract";
 
 const generateMaze = (width, height) => {
@@ -39,56 +39,55 @@ const generateMaze = (width, height) => {
   return maze;
 };
 
-const ProceduralMazeGame = () => {
+const ProceduralMazeGame = ({ walletAddress }) => {
   const [maze, setMaze] = useState([]);
   const [playerPos, setPlayerPos] = useState({ x: 1, y: 1 });
   const [gameStatus, setGameStatus] = useState("waiting");
   const [timeLeft, setTimeLeft] = useState(30);
-  const [walletConnected, setWalletConnected] = useState(false);
   const [contract, setContract] = useState(null);
-  const [userAddress, setUserAddress] = useState("");
   const timerRef = useRef(null);
 
   const MAZE_WIDTH = 21;
   const MAZE_HEIGHT = 21;
 
-  const connectWallet = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        const network = await provider.getNetwork();
+  useEffect(() => {
+    const initializeContract = async () => {
+      if (typeof window.ethereum !== "undefined" && walletAddress) {
+        try {
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          const signer = await provider.getSigner();
+          const network = await provider.getNetwork();
 
-        if (network.chainId !== 5003) {
-          await window.ethereum.request({
-            method: "wallet_switchEthereumChain",
-            params: [{ chainId: "0x138B" }],
-          });
+          if (network.chainId !== 5003) {
+            await window.ethereum.request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x138B" }],
+            });
+          }
+
+          const gameContract = new ethers.Contract(
+            CONTRACT_ADDRESS,
+            CONTRACT_ABI,
+            signer
+          );
+
+          setContract(gameContract);
+        } catch (error) {
+          console.error("Failed to initialize contract", error);
         }
-
-        const address = await signer.getAddress();
-        const gameContract = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          CONTRACT_ABI,
-          signer
-        );
-
-        setUserAddress(address);
-        setContract(gameContract);
-        setWalletConnected(true);
-      } catch (error) {
-        console.error("Failed to connect wallet", error);
       }
-    } else {
-      alert("Please install MetaMask!");
-    }
-  };
+    };
+
+    initializeContract();
+  }, [walletAddress]);
 
   const startGame = async () => {
     try {
       if (!contract) return;
 
-      await contract.enterGame({ value: ethers.parseEther("0.01") });
+      const entryFee = ethers.parseEther("0.01"); // Ensure this matches the contract's entry fee requirement
+
+      await contract.enterGame(entryFee, { value: entryFee }); // Pass entryFee as an argument and value
       alert("Entry fee paid. Starting the game!");
 
       // Initialize maze and start timer
@@ -115,7 +114,7 @@ const ProceduralMazeGame = () => {
 
   const movePlayer = useCallback(
     async (dx, dy) => {
-      if (gameStatus !== "playing" || !walletConnected || !contract) return;
+      if (gameStatus !== "playing" || !contract) return;
 
       const newX = playerPos.x + dx;
       const newY = playerPos.y + dy;
@@ -134,16 +133,19 @@ const ProceduralMazeGame = () => {
           setGameStatus("won");
 
           try {
-            // Pay the winner
-            const payTx = await contract.payWinner(userAddress);
-            await payTx.wait();
-            alert("Congratulations! Token Transferred");
+            // Define the prize amount
+            const prizeAmount = ethers.parseEther("0.05"); // Example: 0.05 ETH
 
-            // If won within 10 seconds, mint an additional NFT
-            if (timeLeft > 15) {
+            // Pay the winner
+            const payTx = await contract.payWinner(walletAddress, prizeAmount);
+            await payTx.wait();
+            alert("Congratulations! Prize Transferred!");
+
+            // If won within 15 seconds, mint an additional NFT
+            if (timeLeft > 1) {
               const mintTx = await contract.mintWinningNFT(1);
               await mintTx.wait();
-              alert("You won within 10 seconds! Special NFT minted!");
+              alert("You won within 15 seconds! Special NFT minted!");
             }
           } catch (error) {
             console.error("Error during NFT or payment processing:", error);
@@ -151,7 +153,7 @@ const ProceduralMazeGame = () => {
         }
       }
     },
-    [playerPos, maze, gameStatus, walletConnected, contract, timeLeft]
+    [playerPos, maze, gameStatus, contract, timeLeft, walletAddress]
   );
 
   useEffect(() => {
@@ -180,13 +182,10 @@ const ProceduralMazeGame = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <h1 className="text-3xl font-bold mb-4">Maze Game</h1>
 
-      {!walletConnected ? (
-        <button
-          onClick={connectWallet}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Connect Wallet
-        </button>
+      {!contract ? (
+        <div className="text-red-500 font-bold">
+          Please connect wallet through Navbar
+        </div>
       ) : gameStatus === "waiting" ? (
         <button
           onClick={startGame}

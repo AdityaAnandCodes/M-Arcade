@@ -1,5 +1,5 @@
 import { Circle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ethers } from "ethers";
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "../constants_contract";
@@ -10,6 +10,29 @@ const Navbar = ({ onWalletAddressUpdate }) => {
   const [isWalletConnected, setWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
   const location = useLocation();
+
+  useEffect(() => {
+    const loadWallet = async () => {
+      const storedAddress = localStorage.getItem("walletAddress");
+      if (storedAddress && typeof window.ethereum !== "undefined") {
+        try {
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          const signer = await provider.getSigner();
+          const address = await signer.getAddress();
+
+          if (address === storedAddress) {
+            setWalletConnected(true);
+            setWalletAddress(address);
+            onWalletAddressUpdate(address);
+          }
+        } catch (error) {
+          console.error("Error reconnecting wallet:", error);
+        }
+      }
+    };
+
+    loadWallet();
+  }, [onWalletAddressUpdate]);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
@@ -33,22 +56,18 @@ const Navbar = ({ onWalletAddressUpdate }) => {
           });
         }
 
-        // Connect to contract
         const contractInstance = new ethers.Contract(
           CONTRACT_ADDRESS,
           CONTRACT_ABI,
           signer
         );
 
-        let playerNameLocal = playerName; // Use a different name to avoid conflicts
+        let playerNameLocal = playerName;
         if (!playerNameLocal) {
           try {
-            // Attempt to get existing player name from contract
             const existingPlayerName = await contractInstance.playerNames(
               address
             );
-
-            // If an existing name is found, use it
             if (existingPlayerName) {
               playerNameLocal = existingPlayerName;
               setPlayerName(existingPlayerName);
@@ -58,20 +77,17 @@ const Navbar = ({ onWalletAddressUpdate }) => {
           }
         }
 
-        // If still no name, prompt for registration
         if (!playerNameLocal) {
           alert("Please provide a name to register.");
           return;
         }
 
-        // Call registerPlayer (which now handles existing players)
         const tx = await contractInstance.registerPlayer(playerNameLocal);
         await tx.wait();
 
         setWalletConnected(true);
         setWalletAddress(address);
-
-        // Pass the wallet address up to the parent component
+        localStorage.setItem("walletAddress", address);
         onWalletAddressUpdate(address);
 
         alert(
@@ -88,16 +104,13 @@ const Navbar = ({ onWalletAddressUpdate }) => {
 
   return (
     <nav className="w-full flex justify-between items-center p-4 sm:px-6 md:px-8 relative z-10">
-      {/* Logo */}
       <Link to="/">
         <div className="logo text-2xl sm:text-3xl md:text-4xl font-bold focus:border-none">
           M-Arcade
         </div>
       </Link>
-
-      {/* Hamburger Menu for Mobile */}
-      <div 
-        className="sm:hidden absolute right-4 top-1/2 -translate-y-1/2" 
+      <div
+        className="sm:hidden absolute right-4 top-1/2 -translate-y-1/2"
         onClick={toggleMobileMenu}
       >
         <Circle
@@ -106,8 +119,6 @@ const Navbar = ({ onWalletAddressUpdate }) => {
           } w-6 h-6 cursor-pointer transition-all duration-300 hover:scale-110`}
         />
       </div>
-
-      {/* Navigation and Mobile Menu */}
       <div
         className={`${
           isMobileMenuOpen ? "flex text-white" : "hidden"
@@ -131,8 +142,6 @@ const Navbar = ({ onWalletAddressUpdate }) => {
             Leaderboard
           </div>
         </Link>
-
-        {/* Sign Up / Wallet Button */}
         {!isWalletConnected ? (
           <div className="sm:hidden flex flex-col gap-2">
             <input
@@ -157,8 +166,6 @@ const Navbar = ({ onWalletAddressUpdate }) => {
           </div>
         )}
       </div>
-
-      {/* Regular Connect Wallet Button for Desktop */}
       {!isWalletConnected ? (
         <div className="hidden sm:flex gap-2 items-center">
           <input

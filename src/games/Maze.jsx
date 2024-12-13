@@ -134,7 +134,7 @@ const ProceduralMazeGame = ({ walletAddress }) => {
 
           try {
             // Define the prize amount
-            const prizeAmount = ethers.parseEther("0.05"); // Example: 0.05 ETH
+            const prizeAmount = ethers.parseEther("0.01"); // Example: 0.05 ETH
 
             // Pay the winner
             const payTx = await contract.payWinner(walletAddress, prizeAmount);

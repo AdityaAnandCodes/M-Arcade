@@ -1,58 +1,57 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants_contract";
 
-const MemoryMatch = ({walletAddress}) => {
+const MemoryMatch = ({ walletAddress }) => {
   const [cards, setCards] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [matchedPairs, setMatchedPairs] = useState([]);
   const [gameOver, setGameOver] = useState(false);
   const [moves, setMoves] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(120);
   const [gameStatus, setGameStatus] = useState("waiting");
 
   // Blockchain-related states
-  const [walletConnected, setWalletConnected] = useState(false);
   const [contract, setContract] = useState(null);
-  const [userAddress, setUserAddress] = useState("");
 
   const MAX_MOVES = 50;
   const TOTAL_TIME = 120;
 
-  const connectWallet = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        const network = await provider.getNetwork();
+  // Initialize contract on component mount
+  useEffect(() => {
+    const initializeContract = async () => {
+      if (typeof window.ethereum !== "undefined" && walletAddress) {
+        try {
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          const signer = await provider.getSigner();
+          const network = await provider.getNetwork();
 
-        if (network.chainId !== 5003) {
-          await window.ethereum.request({
-            method: "wallet_switchEthereumChain",
-            params: [{ chainId: "0x138B" }],
-          });
+          // Switch to the correct network (Berachain Testnet)
+          if (network.chainId !== 5003) {
+            await window.ethereum.request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x138B" }],
+            });
+          }
+
+          const gameContract = new ethers.Contract(
+            CONTRACT_ADDRESS,
+            CONTRACT_ABI,
+            signer
+          );
+
+          setContract(gameContract);
+        } catch (error) {
+          console.error("Failed to initialize contract", error);
         }
-
-        const address = await signer.getAddress();
-        const gameContract = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          CONTRACT_ABI,
-          signer
-        );
-
-        setUserAddress(address);
-        setContract(gameContract);
-        setWalletConnected(true);
-      } catch (error) {
-        console.error("Failed to connect wallet", error);
       }
-    } else {
-      alert("Please install MetaMask!");
-    }
-  };
+    };
+
+    initializeContract();
+  }, [walletAddress]);
 
   // Generate cards for the game
-  const initializeGame = () => {
+  const initializeGame = useCallback(() => {
     const symbols = ["🍎", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🍒"];
     const shuffledCards = [...symbols, ...symbols]
       .sort(() => Math.random() - 0.5)
@@ -68,13 +67,15 @@ const MemoryMatch = ({walletAddress}) => {
     setMoves(0);
     setTimeLeft(TOTAL_TIME);
     setGameStatus("waiting");
-  };
+  }, []);
 
+  // Start game with blockchain entry fee
   const startGame = async () => {
     try {
       if (!contract) return;
 
-      await contract.enterGame({ value: ethers.parseEther("0.01") });
+      const entryFee = ethers.parseEther("0.01");
+      await contract.enterGame(entryFee, { value: entryFee });
       alert("Entry fee paid. Starting the game!");
 
       setGameStatus("playing");
@@ -83,7 +84,7 @@ const MemoryMatch = ({walletAddress}) => {
     }
   };
 
-  // Time and moves tracking
+  // Time tracking
   useEffect(() => {
     let timer;
     if (gameStatus === "playing" && timeLeft > 0) {
@@ -109,12 +110,15 @@ const MemoryMatch = ({walletAddress}) => {
 
     try {
       if (won) {
-        // Pay the winner
-        const payTx = await contract.payWinner(userAddress);
-        await payTx.wait();
-        alert("Congratulations! Token Transferred");
+        // Define prize amount
+        const prizeAmount = ethers.parseEther("0.01");
 
-        // If won within 25 moves, mint an additional NFT
+        // Pay the winner
+        const payTx = await contract.payWinner(walletAddress, prizeAmount);
+        await payTx.wait();
+        alert("Congratulations! Prize Transferred!");
+
+        // Mint special NFT if won within 25 moves
         if (moves <= 25) {
           const mintTx = await contract.mintWinningNFT(0);
           await mintTx.wait();
@@ -125,6 +129,7 @@ const MemoryMatch = ({walletAddress}) => {
       console.error("Error during NFT or payment processing:", error);
     }
   };
+
   // Handle card click
   const handleCardClick = (clickedCard) => {
     if (
@@ -182,7 +187,7 @@ const MemoryMatch = ({walletAddress}) => {
   // Initialize game on component mount
   useEffect(() => {
     initializeGame();
-  }, []);
+  }, [initializeGame]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
@@ -192,14 +197,9 @@ const MemoryMatch = ({walletAddress}) => {
             Memory Matching Game
           </h1>
 
-          {!walletConnected ? (
-            <div className="text-center">
-              <button
-                onClick={connectWallet}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Connect Wallet
-              </button>
+          {!contract ? (
+            <div className="text-red-500 font-bold text-center">
+              Please connect wallet through Navbar
             </div>
           ) : gameStatus === "waiting" ? (
             <div className="text-center">

@@ -8,12 +8,17 @@ const CTA = () => {
   useEffect(() => {
     // Bounce animation for the ball
     gsap.fromTo('.bounce', {
-      y: 100, 
+      y: 100,
+      scaleX: 1.05,
+      scaleY: 0.95,
     },{
       y:-80,
       repeat: -1,
       ease: 'power1.out',
       yoyo: true,
+      scaleX: 0.95,
+      scaleY: 1,
+      
     });
 
     // Scroll-triggered animation for the text

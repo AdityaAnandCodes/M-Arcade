@@ -62,10 +62,14 @@ const Navbar = ({ onWalletAddressUpdate }) => {
   const connectWalletAndRegister = async () => {
     if (typeof window.ethereum !== "undefined") {
       try {
+        // Request wallet access and enable wallet selection
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         const address = await signer.getAddress();
 
+        // Check the network and switch if needed
         const network = await provider.getNetwork();
         if (network.chainId !== 5003) {
           await window.ethereum.request({

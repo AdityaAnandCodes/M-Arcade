@@ -47,6 +47,18 @@ const Navbar = ({ onWalletAddressUpdate }) => {
     setTimeout(() => setAlert({ message: "", type: "" }), 3000);
   };
 
+  const disconnectWallet = () => {
+    setWalletConnected(false);
+    setWalletAddress("");
+    setPlayerName("");
+
+    localStorage.removeItem("walletAddress");
+
+    onWalletAddressUpdate("");
+
+    showAlert("Wallet disconnected", "info");
+  };
+
   const connectWalletAndRegister = async () => {
     if (typeof window.ethereum !== "undefined") {
       try {
@@ -163,53 +175,41 @@ const Navbar = ({ onWalletAddressUpdate }) => {
               Leaderboard
             </div>
           </Link>
-          {!isWalletConnected ? (
-            <div className="sm:hidden flex flex-col gap-2">
-              <input
-                type="text"
-                placeholder="Enter your name"
-                value={playerName}
-                onChange={(e) => setPlayerName(e.target.value)}
-                className="p-2 border rounded-md"
-              />
-              <button
-                onClick={connectWalletAndRegister}
-                className="p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg mt-4 sm:mt-0"
-              >
-                Connect Wallet
-              </button>
-            </div>
-          ) : (
-            <div className="p-2 px-3 block sm:hidden rounded-3xl border border-green-500 text-sm sm:text-base md:text-lg mt-4 sm:mt-0 text-green-500">
-              {`Connected: ${walletAddress.slice(0, 6)}...${walletAddress.slice(
-                -4
-              )}`}
-            </div>
-          )}
+          <div className="flex flex-col sm:flex-row gap-2 items-center max-sm:w-full">
+            {!isWalletConnected ? (
+              <>
+                <input
+                  type="text"
+                  placeholder="Enter your name"
+                  value={playerName}
+                  onChange={(e) => setPlayerName(e.target.value)}
+                  className="p-2 border rounded-md max-sm:mb-2"
+                />
+                <button
+                  onClick={connectWalletAndRegister}
+                  className="p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg hover:bg-black hover:text-white hover:scale-105 duration-300 transition-all w-full sm:w-auto"
+                >
+                  Connect Wallet
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="p-2 px-3 rounded-3xl border border-green-500 text-sm sm:text-base md:text-lg text-green-500">
+                  {`Connected: ${walletAddress.slice(
+                    0,
+                    6
+                  )}...${walletAddress.slice(-4)}`}
+                </div>
+                <button
+                  onClick={disconnectWallet}
+                  className="p-2 px-3 rounded-3xl border border-red-500 text-red-500 text-sm sm:text-base md:text-lg w-full sm:w-auto hover:bg-red-500 hover:text-white transition-all duration-300"
+                >
+                  Disconnect
+                </button>
+              </>
+            )}
+          </div>
         </div>
-        {!isWalletConnected ? (
-          <div className="hidden sm:flex gap-2 items-center">
-            <input
-              type="text"
-              placeholder="Enter your name"
-              value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
-              className="p-2 border rounded-md"
-            />
-            <button
-              onClick={connectWalletAndRegister}
-              className="p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg hover:bg-black hover:text-white hover:scale-105 duration-300 transition-all"
-            >
-              Connect Wallet
-            </button>
-          </div>
-        ) : (
-          <div className="hidden sm:block p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg text-black hover:bg-black hover:text-white duration-500 transition-all">
-            {`Connected: ${walletAddress.slice(0, 6)}...${walletAddress.slice(
-              -4
-            )}`}
-          </div>
-        )}
       </nav>
     </>
   );

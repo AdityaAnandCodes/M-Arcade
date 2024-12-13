@@ -803,4 +803,4 @@ export const CONTRACT_ABI = [
   },
 ];
 
-export const CONTRACT_ADDRESS = "0x5e9Fd3AFE2d3Cc24cf7889D13bD137e0272E37c7";
+export const CONTRACT_ADDRESS = "0x5c13379da723f1ea0e2e2f24584072cf8365dd6c";

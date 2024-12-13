@@ -42,22 +42,35 @@ const Leaderboard = ({ walletAddress }) => {
     const fetchLeaderboard = async () => {
       if (contract) {
         try {
+          console.log("Attempting to fetch leaderboard...");
           const leaderboardData = await contract.getLeaderboard();
+
+          console.log("Raw Leaderboard Data:", leaderboardData);
+          console.log("Players Array Length:", leaderboardData[0].length);
+          console.log("Wins Array Length:", leaderboardData[1].length);
+
           const playerNames = leaderboardData[0];
           const playerWins = leaderboardData[1];
 
+          console.log("Player Names:", playerNames);
+          console.log("Player Wins:", playerWins);
+
           const formattedData = playerNames.map((name, index) => ({
             name,
-            wins: playerWins[index],
+            wins: playerWins[index].toString(), // Convert BigInt to string
           }));
 
+          console.log("Formatted Data:", formattedData);
           setLeaderboard(formattedData);
         } catch (error) {
-          console.error("Error fetching leaderboard:", error);
+          console.error("Detailed Error fetching leaderboard:", error);
+          console.error("Error Name:", error.name);
+          console.error("Error Message:", error.message);
         }
+      } else {
+        console.log("Contract is not initialized");
       }
     };
-
     fetchLeaderboard();
   }, [contract]);
 

@@ -6,7 +6,7 @@ export const GAMES = [
     description: "Navigate through a challenging maze to find your way out.",
     cost: "10 Tokens",
     rewards: "NFT and up to 100 Tokens",
-    image: "https://via.placeholder.com/150?text=Maze+Master",
+    image: "Maze.gif",
     url: "/games/maze",
   },
   {
@@ -15,7 +15,7 @@ export const GAMES = [
     description: "Match cards to test your memory and win rewards.",
     cost: "5 Tokens",
     rewards: "Rare Frog NFTs and 50 Tokens",
-    image: "https://via.placeholder.com/150?text=Memory+Match",
+    image: "/MemoryMatch.gif",
     url: "/games/memory-match",
   },
   {
@@ -24,7 +24,7 @@ export const GAMES = [
     description: "Control the snake to collect tokens and grow longer.",
     cost: "8 Tokens",
     rewards: "Exclusive NFTs and 80 Tokens",
-    image: "https://via.placeholder.com/150?text=Snake+Snack",
+    image: "/Snake.gif",
     url: "/games/snake",
   },
   {
@@ -42,7 +42,7 @@ export const GAMES = [
     description: "Challenge your reflexes in a thrilling ping pong game.",
     cost: "6 Tokens",
     rewards: "Unique NFTs and 60 Tokens",
-    image: "https://via.placeholder.com/150?text=Ping+Pong+Pro",
+    image: "/CandyVsBomb1.gif",
     url: "/games/candy-minesweeper",
   },
 ];

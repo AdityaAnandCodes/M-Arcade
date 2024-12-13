@@ -5,8 +5,10 @@ import {
   Shuffle, 
   Globe, 
   Wallet, 
-  ShieldCheck 
+  ShieldCheck, 
+  Award
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Web3GamingBenefits = () => {
   const benefits = [
@@ -68,10 +70,11 @@ const Web3GamingBenefits = () => {
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <button className="bg-black text-white px-8 py-3 rounded-full hover:bg-neutral-900 hover:scale-105 duration-300 transition-all">
-            Explore Web3 Games
-          </button>
+        <div className="text-center mt-12 flex justify-center">
+          <Link to="/leaderboard">
+          <button className="bg-black text-white flex gap-2 justify-center items-center px-8 py-3 rounded-full hover:bg-neutral-900 hover:scale-105 duration-300 transition-all">
+            <Award /> Explore Leaderboards
+          </button></Link>
         </div>
       </div>
     </section>

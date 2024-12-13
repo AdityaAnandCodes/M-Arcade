@@ -2,13 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Stinger Fit Trial";
-  font-style: normal;
-  font-weight: bolder;
-  src: local("Stinger Fit Trial"),
-    url("/fonts/stinger-fit-trial.heavy.ttf") format("ttf");
-}
+
 
 * {
   font-family: "Poppins", sans-serif;
@@ -47,4 +41,23 @@ nav .logo {
 }
 .anim-typewriter {
   border-right-width: 2px;
+}
+
+/* Add this to your CSS file */
+.alert-enter {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+.alert-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.alert-exit {
+  opacity: 1;
+}
+.alert-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s, transform 0.3s;
 }

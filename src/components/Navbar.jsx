@@ -9,6 +9,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
   const [playerName, setPlayerName] = useState("");
   const [isWalletConnected, setWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
+  const [alert, setAlert] = useState({ message: "", type: "" });
   const location = useLocation();
 
   useEffect(() => {
@@ -41,6 +42,11 @@ const Navbar = ({ onWalletAddressUpdate }) => {
   const isActive = (path) =>
     location.pathname === path ? "fill-black max-sm:fill-white" : "";
 
+  const showAlert = (message, type = "info") => {
+    setAlert({ message, type });
+    setTimeout(() => setAlert({ message: "", type: "" }), 3000);
+  };
+
   const connectWalletAndRegister = async () => {
     if (typeof window.ethereum !== "undefined") {
       try {
@@ -52,7 +58,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
         if (network.chainId !== 5003) {
           await window.ethereum.request({
             method: "wallet_switchEthereumChain",
-            params: [{ chainId: "0x138B" }], // Replace with your Chain ID
+            params: [{ chainId: "0x138B" }],
           });
         }
 
@@ -78,7 +84,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
         }
 
         if (!playerNameLocal) {
-          alert("Please provide a name to register.");
+          showAlert("Please provide a name to register.", "warning");
           return;
         }
 
@@ -90,60 +96,99 @@ const Navbar = ({ onWalletAddressUpdate }) => {
         localStorage.setItem("walletAddress", address);
         onWalletAddressUpdate(address);
 
-        alert(
-          `Wallet connected${playerNameLocal ? ` as ${playerNameLocal}` : ""}`
+        showAlert(
+          `Wallet connected${playerNameLocal ? ` as ${playerNameLocal}` : ""}`,
+          "success"
         );
       } catch (error) {
         console.error("Error connecting wallet and registering:", error);
-        alert("Failed to connect wallet or register.");
+        showAlert("Failed to connect wallet or register.", "error");
       }
     } else {
-      alert("MetaMask is not installed!");
+      showAlert("MetaMask is not installed!", "error");
     }
   };
 
   return (
-    <nav className="w-full flex justify-between items-center p-4 sm:px-6 md:px-8 relative z-10">
-      <Link to="/">
-        <div className="logo text-2xl sm:text-3xl md:text-4xl font-bold focus:border-none">
-          M-Arcade
+    <>
+      {alert.message && (
+        <div
+          className={`fixed top-4 left-1/2 z-50 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-white text-sm ${
+            alert.type === "success"
+              ? "bg-green-500"
+              : alert.type === "error"
+              ? "bg-red-500"
+              : "bg-yellow-500"
+          }`}
+        >
+          {alert.message}
         </div>
-      </Link>
-      <div
-        className="sm:hidden absolute right-4 top-1/2 -translate-y-1/2"
-        onClick={toggleMobileMenu}
-      >
-        <Circle
-          className={`${
-            isMobileMenuOpen ? "fill-black" : ""
-          } w-6 h-6 cursor-pointer transition-all duration-300 hover:scale-110`}
-        />
-      </div>
-      <div
-        className={`${
-          isMobileMenuOpen ? "flex text-white" : "hidden"
-        } sm:flex flex-col sm:flex-row gap-10 justify-center items-center font-bold text-sm sm:text-base md:text-lg absolute sm:relative left-0 w-full sm:w-auto bg-black sm:bg-transparent p-4 max-sm:z-20 sm:p-0 top-full sm:top-0`}
-      >
+      )}
+      <nav className="w-full flex justify-between items-center p-4 sm:px-6 md:px-8 relative z-10">
         <Link to="/">
-          <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
-            <Circle className={`w-3 h-3 ${isActive("/")}`} />
-            Home
+          <div className="logo text-2xl sm:text-3xl md:text-4xl font-bold focus:border-none">
+            M-Arcade
           </div>
         </Link>
-        <Link to="/games">
-          <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
-            <Circle className={`w-3 h-3 ${isActive("/games")}`} />
-            Games
-          </div>
-        </Link>
-        <Link to="/leaderboard">
-          <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
-            <Circle className={`w-3 h-3 ${isActive("/leaderboard")}`} />
-            Leaderboard
-          </div>
-        </Link>
+        <div
+          className="sm:hidden absolute right-4 top-1/2 -translate-y-1/2"
+          onClick={toggleMobileMenu}
+        >
+          <Circle
+            className={`${
+              isMobileMenuOpen ? "fill-black" : ""
+            } w-6 h-6 cursor-pointer transition-all duration-300 hover:scale-110`}
+          />
+        </div>
+        <div
+          className={`${
+            isMobileMenuOpen ? "flex text-white" : "hidden"
+          } sm:flex flex-col sm:flex-row gap-10 justify-center items-center font-bold text-sm sm:text-base md:text-lg absolute sm:relative left-0 w-full sm:w-auto bg-black sm:bg-transparent p-4 max-sm:z-20 sm:p-0 top-full sm:top-0`}
+        >
+          <Link to="/">
+            <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
+              <Circle className={`w-3 h-3 ${isActive("/")}`} />
+              Home
+            </div>
+          </Link>
+          <Link to="/games">
+            <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
+              <Circle className={`w-3 h-3 ${isActive("/games")}`} />
+              Games
+            </div>
+          </Link>
+          <Link to="/leaderboard">
+            <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
+              <Circle className={`w-3 h-3 ${isActive("/leaderboard")}`} />
+              Leaderboard
+            </div>
+          </Link>
+          {!isWalletConnected ? (
+            <div className="sm:hidden flex flex-col gap-2">
+              <input
+                type="text"
+                placeholder="Enter your name"
+                value={playerName}
+                onChange={(e) => setPlayerName(e.target.value)}
+                className="p-2 border rounded-md"
+              />
+              <button
+                onClick={connectWalletAndRegister}
+                className="p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg mt-4 sm:mt-0"
+              >
+                Connect Wallet
+              </button>
+            </div>
+          ) : (
+            <div className="p-2 px-3 block sm:hidden rounded-3xl border border-green-500 text-sm sm:text-base md:text-lg mt-4 sm:mt-0 text-green-500">
+              {`Connected: ${walletAddress.slice(0, 6)}...${walletAddress.slice(
+                -4
+              )}`}
+            </div>
+          )}
+        </div>
         {!isWalletConnected ? (
-          <div className="sm:hidden flex flex-col gap-2">
+          <div className="hidden sm:flex gap-2 items-center">
             <input
               type="text"
               placeholder="Enter your name"
@@ -153,43 +198,20 @@ const Navbar = ({ onWalletAddressUpdate }) => {
             />
             <button
               onClick={connectWalletAndRegister}
-              className="p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg mt-4 sm:mt-0"
+              className="p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg hover:bg-black hover:text-white hover:scale-105 duration-300 transition-all"
             >
               Connect Wallet
             </button>
           </div>
         ) : (
-          <div className="p-2 px-3 block sm:hidden rounded-3xl border border-green-500 text-sm sm:text-base md:text-lg mt-4 sm:mt-0 text-green-500">
+          <div className="hidden sm:block p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg text-black hover:bg-black hover:text-white duration-500 transition-all">
             {`Connected: ${walletAddress.slice(0, 6)}...${walletAddress.slice(
               -4
             )}`}
           </div>
         )}
-      </div>
-      {!isWalletConnected ? (
-        <div className="hidden sm:flex gap-2 items-center">
-          <input
-            type="text"
-            placeholder="Enter your name"
-            value={playerName}
-            onChange={(e) => setPlayerName(e.target.value)}
-            className="p-2 border rounded-md"
-          />
-          <button
-            onClick={connectWalletAndRegister}
-            className="p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg hover:bg-black hover:text-white hover:scale-105 duration-300 transition-all"
-          >
-            Connect Wallet
-          </button>
-        </div>
-      ) : (
-        <div className="hidden sm:block p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg text-black hover:bg-black hover:text-white duration-500 transition-all">
-          {`Connected: ${walletAddress.slice(0, 6)}...${walletAddress.slice(
-            -4
-          )}`}
-        </div>
-      )}
-    </nav>
+      </nav>
+    </>
   );
 };
 

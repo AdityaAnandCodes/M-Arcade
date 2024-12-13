@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { useGSAP } from "@gsap/react";
 import Footer from "../components/Footer";
+import CTA from "../components/CTA";
 
 const Games = () => {
   useGSAP(() => {
@@ -68,6 +69,7 @@ const Games = () => {
           ))}
         </div>
       </div>
+      <CTA />
       <Footer />
     </section>
   );

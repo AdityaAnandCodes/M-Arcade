@@ -11,7 +11,7 @@ const Home2 = () => {
         <Navbar />
         <Hero />
         <Web3GamingBenefits />
-        <CTA />
+        
         <Footer />
     </section>
   )

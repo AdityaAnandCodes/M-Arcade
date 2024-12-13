@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
+import { ethers } from "ethers";
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants_contract";
 
-const PingPongGame = ({walletAddress}) => {
+const PingPongGame = ({ walletAddress }) => {
   // Game state
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
-  const [gameStatus, setGameStatus] = useState("start");
+  const [gameStatus, setGameStatus] = useState("waiting");
+
+  // Blockchain-related state
+  const [contract, setContract] = useState(null);
 
   // Keyboard state
   const keysPressed = useRef({
@@ -32,12 +37,82 @@ const PingPongGame = ({walletAddress}) => {
   const PADDLE_SPEED = 8;
   const PADDLE_ACCELERATION = 0.7;
 
-  // Initialize game
-  const startGame = () => {
-    setGameStatus("playing");
-    setPlayerScore(0);
-    setComputerScore(0);
-    resetBall();
+  // Initialize contract on component mount
+  useEffect(() => {
+    const initializeContract = async () => {
+      if (typeof window.ethereum !== "undefined" && walletAddress) {
+        try {
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          const signer = await provider.getSigner();
+          const network = await provider.getNetwork();
+
+          // Switch to the correct network (Berachain Testnet)
+          if (network.chainId !== 5003) {
+            await window.ethereum.request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x138B" }],
+            });
+          }
+
+          const gameContract = new ethers.Contract(
+            CONTRACT_ADDRESS,
+            CONTRACT_ABI,
+            signer
+          );
+
+          setContract(gameContract);
+        } catch (error) {
+          console.error("Failed to initialize contract", error);
+        }
+      }
+    };
+
+    initializeContract();
+  }, [walletAddress]);
+
+  // Start game with blockchain entry fee
+  const startGame = async () => {
+    try {
+      if (!contract) return;
+
+      const entryFee = ethers.parseEther("0.01");
+      await contract.enterGame(entryFee, { value: entryFee });
+      alert("Entry fee paid. Starting the game!");
+
+      // Reset game state
+      setPlayerScore(0);
+      setComputerScore(0);
+      setGameStatus("playing");
+      resetBall();
+    } catch (error) {
+      console.error("Error paying entry fee:", error);
+    }
+  };
+
+  // Handle game completion
+  const handleGameCompletion = async (won) => {
+    if (!contract) return;
+
+    try {
+      if (won) {
+        // Define prize amount
+        const prizeAmount = ethers.parseEther("0.05");
+
+        // Pay the winner
+        const payTx = await contract.payWinner(walletAddress, prizeAmount);
+        await payTx.wait();
+        alert("Congratulations! Prize Transferred!");
+
+        // Mint special NFT if won without losing a point
+        // if (computerScore === 0) {
+        //   const mintTx = await contract.mintWinningNFT(2);
+        //   await mintTx.wait();
+        //   alert("Perfect game! Special NFT minted!");
+        // }
+      }
+    } catch (error) {
+      console.error("Error during NFT or payment processing:", error);
+    }
   };
 
   // Reset ball to center with random direction
@@ -169,6 +244,7 @@ const PingPongGame = ({walletAddress}) => {
           setPlayerScore((prevScore) => {
             if (prevScore + 1 === 10) {
               setGameStatus("gameOver");
+              handleGameCompletion(true);
               return prevScore + 1;
             }
             resetBall();
@@ -205,56 +281,70 @@ const PingPongGame = ({walletAddress}) => {
       </div>
 
       {/* Game Area */}
-      <div
-        className="relative border-2 border-white overflow-hidden"
-        style={{
-          width: `${GAME_WIDTH}px`,
-          height: `${GAME_HEIGHT}px`,
-          cursor: gameStatus !== "playing" ? "pointer" : "none",
-        }}
-        onClick={gameStatus !== "playing" ? startGame : undefined}
-      >
-        {gameStatus !== "playing" && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <p className="text-3xl">
-              {gameStatus === "start" ? "Click to Start" : "Game Over"}
-            </p>
-          </div>
-        )}
-
-        {/* Player Paddle */}
+      {!contract ? (
+        <div className="text-red-500 font-bold text-center">
+          Please connect wallet through Navbar
+        </div>
+      ) : gameStatus === "waiting" ? (
+        <div className="text-center">
+          <button
+            onClick={startGame}
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          >
+            Pay Entry Fee & Start Game
+          </button>
+        </div>
+      ) : (
         <div
-          className="absolute bg-white"
+          className="relative border-2 border-white overflow-hidden"
           style={{
-            left: 0,
-            top: `${paddlePosition.player}px`,
-            width: `${PADDLE_WIDTH}px`,
-            height: `${PADDLE_HEIGHT}px`,
+            width: `${GAME_WIDTH}px`,
+            height: `${GAME_HEIGHT}px`,
+            cursor: gameStatus !== "playing" ? "pointer" : "none",
           }}
-        />
+        >
+          {gameStatus !== "playing" && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <p className="text-3xl">
+                {gameStatus === "gameOver" ? "Game Over" : "Click to Start"}
+              </p>
+            </div>
+          )}
 
-        {/* Computer Paddle */}
-        <div
-          className="absolute bg-white"
-          style={{
-            right: 0,
-            top: `${paddlePosition.computer}px`,
-            width: `${PADDLE_WIDTH}px`,
-            height: `${PADDLE_HEIGHT}px`,
-          }}
-        />
+          {/* Player Paddle */}
+          <div
+            className="absolute bg-white"
+            style={{
+              left: 0,
+              top: `${paddlePosition.player}px`,
+              width: `${PADDLE_WIDTH}px`,
+              height: `${PADDLE_HEIGHT}px`,
+            }}
+          />
 
-        {/* Ball */}
-        <div
-          className="absolute bg-white rounded-full"
-          style={{
-            left: `${ballPosition.x}px`,
-            top: `${ballPosition.y}px`,
-            width: `${BALL_SIZE}px`,
-            height: `${BALL_SIZE}px`,
-          }}
-        />
-      </div>
+          {/* Computer Paddle */}
+          <div
+            className="absolute bg-white"
+            style={{
+              right: 0,
+              top: `${paddlePosition.computer}px`,
+              width: `${PADDLE_WIDTH}px`,
+              height: `${PADDLE_HEIGHT}px`,
+            }}
+          />
+
+          {/* Ball */}
+          <div
+            className="absolute bg-white rounded-full"
+            style={{
+              left: `${ballPosition.x}px`,
+              top: `${ballPosition.y}px`,
+              width: `${BALL_SIZE}px`,
+              height: `${BALL_SIZE}px`,
+            }}
+          />
+        </div>
+      )}
 
       {/* Instructions */}
       <div className="mt-4 text-center text-gray-300">

@@ -25,9 +25,9 @@ const Games = () => {
   return (
     <section className="min-h-screen bg-white">
       <div className="container mx-auto py-12 pt-2 px-4">
-        <div className="rounded-3xl w-full bg-black h-80 mb-10 flex justify-center items-center">
+        
           <CTA />
-        </div>
+        
         <h1 className="text-4xl font-sans font-bold text-center mb-10">
           Available Games
         </h1>

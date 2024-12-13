@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { ethers } from "ethers";
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants_contract";
 
-const SnakeGame = ({walletAddress}) => {
+const SnakeGame = ({ walletAddress }) => {
   const BOARD_WIDTH = 20; // Number of cells horizontally
   const BOARD_HEIGHT = 20; // Number of cells vertically
   const CELL_SIZE = 20; // Size of each cell in pixels
@@ -8,6 +10,7 @@ const SnakeGame = ({walletAddress}) => {
   const BOARD_PIXEL_WIDTH = BOARD_WIDTH * CELL_SIZE;
   const BOARD_PIXEL_HEIGHT = BOARD_HEIGHT * CELL_SIZE;
   const INITIAL_SPEED = 200; // Initial speed in milliseconds
+  const GAME_DURATION = 60; // Game duration in seconds
 
   const [snake, setSnake] = useState([
     { x: 10, y: 10 },
@@ -18,9 +21,103 @@ const SnakeGame = ({walletAddress}) => {
   const [direction, setDirection] = useState("RIGHT");
   const [speed, setSpeed] = useState(INITIAL_SPEED);
   const [score, setScore] = useState(0);
-  const [gameOver, setGameOver] = useState(false);
+  const [gameStatus, setGameStatus] = useState("waiting");
+  const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
+  const [contract, setContract] = useState(null);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    const initializeContract = async () => {
+      if (typeof window.ethereum !== "undefined" && walletAddress) {
+        try {
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          const signer = await provider.getSigner();
+          const network = await provider.getNetwork();
+
+          if (network.chainId !== 5003) {
+            await window.ethereum.request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x138B" }],
+            });
+          }
+
+          const gameContract = new ethers.Contract(
+            CONTRACT_ADDRESS,
+            CONTRACT_ABI,
+            signer
+          );
+
+          setContract(gameContract);
+        } catch (error) {
+          console.error("Failed to initialize contract", error);
+        }
+      }
+    };
+
+    initializeContract();
+  }, [walletAddress]);
+
+  const startGame = async () => {
+    try {
+      if (!contract) {
+        alert("Please connect your wallet first.");
+        return;
+      }
+
+      const entryFee = ethers.parseEther("0.01");
+
+      try {
+        const tx = await contract.enterGame(ethers.parseUnits("10", 0), {
+          value: entryFee,
+        });
+        await tx.wait(); // Wait for transaction confirmation
+
+        alert("Entry fee paid. Starting the game!");
+
+        // Reset game state
+        setSnake([
+          { x: 10, y: 10 },
+          { x: 9, y: 10 },
+          { x: 8, y: 10 },
+        ]);
+        setFood(generateFood());
+        setDirection("RIGHT");
+        setSpeed(INITIAL_SPEED);
+        setScore(0);
+        setGameStatus("playing");
+        setTimeLeft(GAME_DURATION);
+
+        // Start timer
+        timerRef.current = setInterval(() => {
+          setTimeLeft((prev) => {
+            if (prev <= 1) {
+              clearInterval(timerRef.current);
+              handleGameEnd(false);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      } catch (error) {
+        console.error("Transaction error:", error);
+
+        if (error.code === "ACTION_REJECTED") {
+          alert("Transaction was cancelled. Please try again.");
+        } else if (error.message.includes("insufficient funds")) {
+          alert("Insufficient funds to pay entry fee.");
+        } else {
+          alert(
+            "Failed to enter game. Please check your wallet and try again."
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      alert("An unexpected error occurred.");
+    }
+  };
 
   const generateFood = useCallback(() => {
     let newFood;
@@ -37,8 +134,57 @@ const SnakeGame = ({walletAddress}) => {
     return newFood;
   }, [snake]);
 
+  const handleGameEnd = async (isWinner) => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+
+    try {
+      if (!contract) return;
+
+      if (isWinner) {
+        setGameStatus("won");
+
+        // Calculate prize amount (0.01% of score)
+        const prizeFraction = score * 0.0001; // 0.01% = score * 0.0001
+        const prizeAmount = ethers.parseEther(prizeFraction.toString());
+
+        // Ensure minimum prize of 0.0001 ETH and maximum of 0.1 ETH
+        const clampedPrizeAmount =
+          prizeAmount < ethers.parseEther("0.0001")
+            ? ethers.parseEther("0.0001")
+            : prizeAmount > ethers.parseEther("0.1")
+            ? ethers.parseEther("0.1")
+            : prizeAmount;
+
+        // Pay the winner
+        const payTx = await contract.payWinner(
+          walletAddress,
+          clampedPrizeAmount
+        );
+        await payTx.wait();
+
+        // Alert with exact prize amount
+        const prizeInEth = ethers.formatEther(clampedPrizeAmount);
+        alert(`Congratulations! You won ${prizeInEth} ETH!`);
+
+        // If score is high (more than 50), mint a special NFT
+        // if (score > 50) {
+        //   const mintTx = await contract.mintWinningNFT(1);
+        //   await mintTx.wait();
+        //   alert("High score! Special NFT minted!");
+        // }
+      } else {
+        setGameStatus("lost");
+      }
+    } catch (error) {
+      console.error("Error during game end processing:", error);
+      setGameStatus("lost");
+    }
+  };
+
   const moveSnake = useCallback(() => {
-    if (gameOver) return;
+    if (gameStatus !== "playing") return;
 
     const newSnake = [...snake];
     const head = { ...newSnake[0] };
@@ -68,7 +214,7 @@ const SnakeGame = ({walletAddress}) => {
       head.y < 0 ||
       head.y >= BOARD_HEIGHT
     ) {
-      setGameOver(true);
+      handleGameEnd(false);
       return;
     }
 
@@ -76,7 +222,7 @@ const SnakeGame = ({walletAddress}) => {
     if (
       newSnake.some((segment) => segment.x === head.x && segment.y === head.y)
     ) {
-      setGameOver(true);
+      handleGameEnd(false);
       return;
     }
 
@@ -91,10 +237,12 @@ const SnakeGame = ({walletAddress}) => {
 
     newSnake.unshift(head);
     setSnake(newSnake);
-  }, [snake, direction, food, gameOver, generateFood]);
+  }, [snake, direction, food, gameStatus, generateFood]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (gameStatus !== "playing") return;
+
       switch (e.key) {
         case "ArrowUp":
           if (direction !== "DOWN") setDirection("UP");
@@ -115,7 +263,7 @@ const SnakeGame = ({walletAddress}) => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [direction]);
+  }, [direction, gameStatus]);
 
   useEffect(() => {
     const gameLoop = setInterval(moveSnake, speed);
@@ -123,6 +271,9 @@ const SnakeGame = ({walletAddress}) => {
   }, [moveSnake, speed]);
 
   const resetGame = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
     setSnake([
       { x: 10, y: 10 },
       { x: 9, y: 10 },
@@ -132,16 +283,18 @@ const SnakeGame = ({walletAddress}) => {
     setDirection("RIGHT");
     setSpeed(INITIAL_SPEED);
     setScore(0);
-    setGameOver(false);
+    setGameStatus("waiting");
+    setTimeLeft(GAME_DURATION);
   };
 
   const handleTouchStart = (e) => {
+    if (gameStatus !== "playing") return;
     const touch = e.touches[0];
     setTouchStart({ x: touch.clientX, y: touch.clientY });
   };
 
   const handleTouchEnd = (e) => {
-    if (!touchStart) return;
+    if (!touchStart || gameStatus !== "playing") return;
 
     const touch = e.changedTouches[0];
     setTouchEnd({ x: touch.clientX, y: touch.clientY });
@@ -165,63 +318,90 @@ const SnakeGame = ({walletAddress}) => {
       onTouchEnd={handleTouchEnd}
     >
       <div className="mb-4">
-        <h1 className="text-3xl font-bold text-[#03045e]">Snake Game</h1>
-        <div className="text-xl mt-2 text-[#03045e]">
-          Score: <span className="font-bold text-[#03045e]">{score}</span>
-        </div>
+        <h1 className="text-3xl font-bold text-[#03045e]">
+          Blockchain Snake Game
+        </h1>
+        {gameStatus === "playing" && (
+          <div className="text-xl mt-2 flex justify-between text-[#03045e]">
+            <span>
+              Score: <span className="font-bold">{score}</span>
+            </span>
+            <span>
+              Time Left: <span className="font-bold">{timeLeft} s</span>
+            </span>
+          </div>
+        )}
       </div>
 
-      {gameOver && (
-        <div className="absolute z-10 bg-[#0077b6] p-6 rounded-lg shadow-xl text-center">
-          <h2 className="text-2xl font-bold text-[#90e0ef] mb-4">Game Over!</h2>
-          <p className="mb-4 text-[#90e0ef]">Final Score: {score}</p>
-          <button
-            onClick={resetGame}
-            className="bg-[#003049] hover:bg-[#002439] text-[#90e0ef] font-bold py-2 px-4 rounded"
-          >
-            Restart Game
-          </button>
+      {!contract ? (
+        <div className="text-red-500 font-bold">
+          Please connect wallet through Navbar
         </div>
-      )}
+      ) : gameStatus === "waiting" ? (
+        <button
+          onClick={startGame}
+          className="bg-[#0077b6] hover:bg-[#003049] text-[#90e0ef] font-bold py-2 px-4 rounded"
+        >
+          Pay Entry Fee & Start Game
+        </button>
+      ) : (
+        <>
+          {(gameStatus === "lost" || gameStatus === "won") && (
+            <div className="absolute z-10 bg-[#0077b6] p-6 rounded-lg shadow-xl text-center">
+              <h2 className="text-2xl font-bold text-[#90e0ef] mb-4">
+                {gameStatus === "won" ? "Congratulations!" : "Game Over!"}
+              </h2>
+              <p className="mb-4 text-[#90e0ef]">Final Score: {score}</p>
+              <button
+                onClick={resetGame}
+                className="bg-[#003049] hover:bg-[#002439] text-[#90e0ef] font-bold py-2 px-4 rounded"
+              >
+                Play Again
+              </button>
+            </div>
+          )}
 
-      <div
-        className="relative border-4 border-[#0077b6]"
-        style={{
-          width: `${BOARD_PIXEL_WIDTH + 4}px`, // Adjust for border size
-          height: `${BOARD_PIXEL_HEIGHT + 4}px`,
-          backgroundColor: "#90e0ef",
-        }}
-      >
-        {/* Snake segments */}
-        {snake.map((segment, index) => (
           <div
-            key={index}
-            className={`absolute ${
-              index === 0 ? "bg-[#0077b6]" : "bg-[#003049]"
-            }`}
+            className="relative border-4 border-[#0077b6]"
             style={{
-              width: `${CELL_SIZE}px`,
-              height: `${CELL_SIZE}px`,
-              left: `${segment.x * CELL_SIZE}px`,
-              top: `${segment.y * CELL_SIZE}px`,
+              width: `${BOARD_PIXEL_WIDTH + 4}px`,
+              height: `${BOARD_PIXEL_HEIGHT + 4}px`,
+              backgroundColor: "#90e0ef",
             }}
-          />
-        ))}
+          >
+            {/* Snake segments */}
+            {snake.map((segment, index) => (
+              <div
+                key={index}
+                className={`absolute ${
+                  index === 0 ? "bg-[#0077b6]" : "bg-[#003049]"
+                }`}
+                style={{
+                  width: `${CELL_SIZE}px`,
+                  height: `${CELL_SIZE}px`,
+                  left: `${segment.x * CELL_SIZE}px`,
+                  top: `${segment.y * CELL_SIZE}px`,
+                }}
+              />
+            ))}
 
-        {/* Food */}
-        <div
-          className="absolute bg-[#d00000]"
-          style={{
-            width: `${CELL_SIZE}px`,
-            height: `${CELL_SIZE}px`,
-            left: `${food.x * CELL_SIZE}px`,
-            top: `${food.y * CELL_SIZE}px`,
-          }}
-        />
-      </div>
+            {/* Food */}
+            <div
+              className="absolute bg-[#d00000]"
+              style={{
+                width: `${CELL_SIZE}px`,
+                height: `${CELL_SIZE}px`,
+                left: `${food.x * CELL_SIZE}px`,
+                top: `${food.y * CELL_SIZE}px`,
+              }}
+            />
+          </div>
+        </>
+      )}
 
       <div className="mt-4 text-sm text-[#03045e]">
         <p>Use Arrow Keys or Swipe to Control the Snake</p>
+        <p>Aim for high score within 60 seconds!</p>
       </div>
     </div>
   );

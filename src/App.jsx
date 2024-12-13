@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Games from "./pages/Games";
 import Home2 from "./pages/Home2";
 import MemoryMatch from "./games/MemoryMatch";
@@ -11,16 +16,25 @@ import CandyMinesweeper from "./games/CandySweeper";
 import Navbar from "./components/Navbar";
 import Leaderboard from "./pages/LeaderBoard";
 
-const App = () => {
-  const [walletAddress, setWalletAddress] = useState("");
+const AppContent = ({ walletAddress, handleWalletAddressUpdate }) => {
+  const location = useLocation(); // Get the current route
 
-  const handleWalletAddressUpdate = (address) => {
-    setWalletAddress(address);
-  };
+  // List of routes where Navbar should not appear
+  const noNavbarRoutes = [
+    "/games/memory-match",
+    "/games/maze",
+    "/games/candy-minesweeper",
+    "/games/ping-pong",
+    "/games/snake",
+  ];
+
+  const showNavbar = !noNavbarRoutes.includes(location.pathname);
 
   return (
-    <Router>
-      <Navbar onWalletAddressUpdate={handleWalletAddressUpdate} />
+    <div>
+      {showNavbar && (
+        <Navbar onWalletAddressUpdate={handleWalletAddressUpdate} />
+      )}
       <Routes>
         <Route path="/" element={<Home2 />} />
         <Route
@@ -31,7 +45,6 @@ const App = () => {
           path="/leaderboard"
           element={<Leaderboard walletAddress={walletAddress} />}
         />
-        ;
         <Route path="/nft" element={<NFT walletAddress={walletAddress} />} />
         <Route
           path="/games/memory-match"
@@ -54,6 +67,23 @@ const App = () => {
           element={<CandyMinesweeper walletAddress={walletAddress} />}
         />
       </Routes>
+    </div>
+  );
+};
+
+const App = () => {
+  const [walletAddress, setWalletAddress] = useState("");
+
+  const handleWalletAddressUpdate = (address) => {
+    setWalletAddress(address);
+  };
+
+  return (
+    <Router>
+      <AppContent
+        walletAddress={walletAddress}
+        handleWalletAddressUpdate={handleWalletAddressUpdate}
+      />
     </Router>
   );
 };

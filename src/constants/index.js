@@ -33,7 +33,7 @@ export const GAMES = [
     description: "Challenge your reflexes in a thrilling ping pong game.",
     cost: "6 Tokens",
     rewards: "Unique NFTs and 60 Tokens",
-    image: "https://via.placeholder.com/150?text=Ping+Pong+Pro",
+    image: "/PingPong.gif",
     url: "/games/ping-pong",
   },
   {

@@ -57,7 +57,7 @@ const Navbar = () => {
 
       {/* Regular Sign Up Button for Desktop */}
       <div className="hidden sm:block p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg hover:bg-black hover:text-white hover:scale-105 duration-300 transition-all">
-        Sign Up
+        Connect Wallet
       </div>
     </nav>
   );

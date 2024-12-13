@@ -8,7 +8,7 @@ const CTA = () => {
   useEffect(() => {
     // Bounce animation for the ball
     gsap.to('.bounce', {
-      y: 250,
+      y: 150,
       yoyo: true,
       repeat: -1,
       ease: 'power1.in',
@@ -34,15 +34,15 @@ const CTA = () => {
   }, []);
 
   return (
-    <section className="max-h-screen p-6">
+    <section className="max-h-screen h-64 p-6 text-white bg-black">
       <div className="grid grid-cols-2">
-        <div className="text-7xl font-extralight flex flex-col gap-16 justify-center items-center scroll-text">
+        <div className="text-7xl font-extralight flex gap-8 justify-center items-end scroll-text">
           <p className="font-thin italic hover:animate-pulse">Stake</p>
           <p className="font-light font-serif italic hover:animate-pulse">Play</p>
           <p className="font-thin italic hover:animate-pulse">Win</p>
         </div>
-        <div className="min-h-80 w-full flex justify-center items-start">
-          <div className="bounce w-24 h-24 bg-black rounded-full"></div>
+        <div className=" w-full flex justify-end items-start">
+          <div className="bounce w-24 h-24 bg-white rounded-full"></div>
         </div>
       </div>
     </section>

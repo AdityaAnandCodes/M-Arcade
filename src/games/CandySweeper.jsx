@@ -39,7 +39,7 @@ const generateBoard = () => {
   return board;
 };
 
-const CandyMinesweeper = () => {
+const CandyMinesweeper = ({walletAddress}) => {
   const [board, setBoard] = useState(generateBoard());
   const [revealedCount, setRevealedCount] = useState(0);
   const [gameStatus, setGameStatus] = useState('playing');

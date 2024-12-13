@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-const SnakeGame = () => {
+const SnakeGame = ({walletAddress}) => {
   const BOARD_WIDTH = 20; // Number of cells horizontally
   const BOARD_HEIGHT = 20; // Number of cells vertically
   const CELL_SIZE = 20; // Size of each cell in pixels

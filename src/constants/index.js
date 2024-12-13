@@ -16,7 +16,7 @@ export const GAMES = [
     cost: "5 Tokens",
     rewards: "Rare Frog NFTs and 50 Tokens",
     image: "https://via.placeholder.com/150?text=Memory+Match",
-    url: "/games/memorymatch",
+    url: "/games/memory-match",
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ export const GAMES = [
     cost: "6 Tokens",
     rewards: "Unique NFTs and 60 Tokens",
     image: "https://via.placeholder.com/150?text=Ping+Pong+Pro",
-    url: "/games/pingpong",
+    url: "/games/ping-pong",
   },
   {
     id: 5,
@@ -43,6 +43,6 @@ export const GAMES = [
     cost: "6 Tokens",
     rewards: "Unique NFTs and 60 Tokens",
     image: "https://via.placeholder.com/150?text=Ping+Pong+Pro",
-    url: "/games/candysweeper",
+    url: "/games/candy-minesweeper",
   },
 ];

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const PingPongGame = () => {
+const PingPongGame = ({walletAddress}) => {
   // Game state
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);

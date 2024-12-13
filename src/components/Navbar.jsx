@@ -87,7 +87,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
   };
 
   return (
-    <nav className="w-full flex justify-between items-center p-4 sm:px-6 md:px-8 z-10">
+    <nav className="w-full flex justify-between items-center p-4 sm:px-6 md:px-8 relative z-10">
       {/* Logo */}
       <Link to="/">
         <div className="logo text-2xl sm:text-3xl md:text-4xl font-bold focus:border-none">
@@ -96,7 +96,10 @@ const Navbar = ({ onWalletAddressUpdate }) => {
       </Link>
 
       {/* Hamburger Menu for Mobile */}
-      <div className="sm:hidden" onClick={toggleMobileMenu}>
+      <div 
+        className="sm:hidden absolute right-4 top-1/2 -translate-y-1/2" 
+        onClick={toggleMobileMenu}
+      >
         <Circle
           className={`${
             isMobileMenuOpen ? "fill-black" : ""
@@ -108,7 +111,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
       <div
         className={`${
           isMobileMenuOpen ? "flex text-white" : "hidden"
-        } sm:flex flex-col sm:flex-row gap-4 justify-center items-center font-bold text-sm sm:text-base md:text-lg absolute sm:relative top-16 sm:top-0 left-0 w-full sm:w-auto bg-black sm:bg-transparent p-4 max-sm:z-10 sm:p-0`}
+        } sm:flex flex-col sm:flex-row gap-10 justify-center items-center font-bold text-sm sm:text-base md:text-lg absolute sm:relative left-0 w-full sm:w-auto bg-black sm:bg-transparent p-4 max-sm:z-20 sm:p-0 top-full sm:top-0`}
       >
         <Link to="/">
           <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
@@ -126,12 +129,6 @@ const Navbar = ({ onWalletAddressUpdate }) => {
           <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
             <Circle className={`w-3 h-3 ${isActive("/leaderboard")}`} />
             Leaderboard
-          </div>
-        </Link>
-        <Link to="/nft">
-          <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
-            <Circle className={`w-3 h-3 ${isActive("/nft")}`} />
-            Shop
           </div>
         </Link>
 
@@ -153,7 +150,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
             </button>
           </div>
         ) : (
-          <div className="p-2 px-3 rounded-3xl border border-green-500 text-sm sm:text-base md:text-lg mt-4 sm:mt-0 text-green-500">
+          <div className="p-2 px-3 block sm:hidden rounded-3xl border border-green-500 text-sm sm:text-base md:text-lg mt-4 sm:mt-0 text-green-500">
             {`Connected: ${walletAddress.slice(0, 6)}...${walletAddress.slice(
               -4
             )}`}
@@ -179,7 +176,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
           </button>
         </div>
       ) : (
-        <div className="hidden sm:block p-2 px-3 rounded-3xl border border-green-500 text-sm sm:text-base md:text-lg text-green-500">
+        <div className="hidden sm:block p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg text-black hover:bg-black hover:text-white duration-500 transition-all">
           {`Connected: ${walletAddress.slice(0, 6)}...${walletAddress.slice(
             -4
           )}`}

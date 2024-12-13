@@ -54,7 +54,7 @@ const CTA = () => {
           <p className="font-thin italic hover:animate-pulse w-full md:w-auto">Win</p>
         </div>
         <div className="w-full flex justify-center md:justify-end items-center md:items-start">
-          <div className="bounce w-16 h-16 md:w-24 md:h-24 bg-white border-2  border-orange-500 rounded-full mr-20 max-sm:mr-0"></div>
+          <div className="bounce w-16 h-16 md:w-24 md:h-24 bg-white rounded-full mr-20 max-sm:mr-0"></div>
         </div>
       </div>
     </section>

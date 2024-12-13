@@ -40,7 +40,7 @@ const Games = () => {
               <img
                 src={game.image}
                 alt={game.title}
-                className="w-full h-48 object-cover rounded-md mb-4"
+                className="w-full h-48 object-cover max-sm:h-44 rounded-md mb-4"
               />
               <div>
                 <div className="flex items-center justify-between mb-4">

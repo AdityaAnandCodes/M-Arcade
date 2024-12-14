@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { ethers } from "ethers";
 import confetti from "canvas-confetti";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants_contract";
+import { Link } from "react-router-dom";
 
 const triggerConfetti = () => {
   confetti({
@@ -197,12 +198,22 @@ const CandyMineSweeper = ({ walletAddress }) => {
             Please connect wallet through Navbar
           </div>
         ) : gameStatus === "waiting" ? (
-          <button
-            onClick={startGame}
-            className="w-full px-4 py-2 bg-black text-white rounded hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
-          >
-            Pay Entry Fee & Start Game
-          </button>
+           <>
+            <div className="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200 mb-4">
+              <h2 className="text-xl font-semibold mb-4">Game Details</h2>
+              <div className="space-y-3 text-gray-600">
+                <p>🎮 Entry Fee: 0.01 MNT</p>
+                <p>🏆 Potential Prize: 0.02 MNT</p>
+              </div>
+            </div>
+
+            <button
+              onClick={startGame}
+              className="w-full px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
+            >
+              Pay Entry Fee & Start Game
+            </button>
+          </>
         ) : (
           <>
             <div className="mb-4 text-2xl font-bold text-center">
@@ -253,6 +264,7 @@ const CandyMineSweeper = ({ walletAddress }) => {
               <div className="text-center text-red-600 mb-4">
                 <p className="text-xl font-bold">Game Over!</p>
                 <p>Time's up or you hit a bomb. Better luck next time!</p>
+                <Link to = '/games' ><button className="rounded bg-black p-2 m-2 font-semibold text-white">Play Again</button></Link>
               </div>
             )}
 
@@ -265,16 +277,16 @@ const CandyMineSweeper = ({ walletAddress }) => {
           </>
         )}
 
-        <div className="text-center mt-4">
+        {/* <div className="text-center mt-4">
           <button
             onClick={resetGame}
             className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
           >
             Reset Game
           </button>
-        </div>
+        </div> */}
 
-        <div className="mt-4 text-center text-gray-600">
+        <div className="mt-4 text-center text-gray-600 text-sm">
           <p>Rules: Pay entry fee, reveal 8 squares without hitting a bomb!</p>
           <p>Win fast to earn a special NFT bonus!</p>
         </div>

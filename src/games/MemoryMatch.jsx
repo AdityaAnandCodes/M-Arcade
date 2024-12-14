@@ -214,14 +214,23 @@ const MemoryMatch = ({ walletAddress }) => {
               Please connect wallet through Navbar
             </div>
           ) : gameStatus === "waiting" ? (
-            <div className="text-center">
-              <button
-                onClick={startGame}
-                className="px-4 py-2 bg-black text-white rounded hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
-              >
-                Pay Entry Fee & Start Game
-              </button>
+            <>
+            <div className="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200 mb-4">
+              <h2 className="text-xl font-semibold mb-4">Game Details</h2>
+              <div className="space-y-3 text-gray-600">
+                <p>🎮 Entry Fee: 0.01 MNT</p>
+                <p>🏆 Potential Prize: 0.02 MNT</p>
+                <p>⭐ Special NFT for quick wins!</p>
+              </div>
             </div>
+
+            <button
+              onClick={startGame}
+              className="w-full px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
+            >
+              Pay Entry Fee & Start Game
+            </button>
+          </>
           ) : (
             <>
               {/* Game Status Display */}
@@ -245,7 +254,7 @@ const MemoryMatch = ({ walletAddress }) => {
                   )}
                   <button
                     onClick={initializeGame}
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="mt-4 px-4 py-2 bg-black text-white rounded hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
                   >
                     Play Again
                   </button>
@@ -278,6 +287,11 @@ const MemoryMatch = ({ walletAddress }) => {
               )}
             </>
           )}
+          <div className="mt-4 text-center">
+        <p className="text-gray-600 text-sm">
+          Click on squares to reveal whats behind match the similar items to win the game.
+        </p>
+      </div>
         </div>
       </div>
     </div>

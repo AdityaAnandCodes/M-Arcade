@@ -199,12 +199,23 @@ const ProceduralMazeGame = ({ walletAddress }) => {
           Please connect wallet through Navbar
         </div>
       ) : gameStatus === "waiting" ? (
-        <button
-          onClick={startGame}
-          className="px-4 py-2 bg-black text-white rounded hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
-        >
-          Pay Entry Fee & Start Game
-        </button>
+        <>
+            <div className="bg-gray-50 p-6 rounded-lg w-96 shadow-sm border border-gray-200 mb-4">
+              <h2 className="text-xl font-semibold mb-4">Game Details</h2>
+              <div className="space-y-3 text-gray-600">
+                <p>🎮 Entry Fee: 0.01 MNT</p>
+                <p>🏆 Potential Prize: 0.02 NFT</p>
+                <p>⭐ Special NFT for quick wins!</p>
+              </div>
+            </div>
+
+            <button
+              onClick={startGame}
+              className="w-96 px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
+            >
+              Pay Entry Fee & Start Game
+            </button>
+          </>
       ) : (
         <>
           <div className="mb-4 text-2xl font-bold">
@@ -259,7 +270,7 @@ const ProceduralMazeGame = ({ walletAddress }) => {
       )}
 
       <div className="mt-4 text-center">
-        <p className="text-gray-600">
+        <p className="text-gray-600 text-sm">
           Use arrow keys to navigate. Green square is the start, red is the end.
           Reach the end before time runs out!
         </p>

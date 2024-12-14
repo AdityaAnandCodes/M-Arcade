@@ -86,6 +86,15 @@ npm run dev
 
 ---
 
+🔗 Contract Details
+Smart Contract Address:
+0xF7cFC10cdBa36937f0F80f028303f624d2b5D7b7
+
+View on Mantle Explorer:
+[Explore the Contract](https://explorer.sepolia.mantle.xyz/address/0xF7cFC10cdBa36937f0F80f028303f624d2b5D7b7)
+
+---
+
 ## 📜 License
 This project is licensed under the **Apache License**. See the [LICENSE](https://github.com/AdityaAnandCodes/M-Arcade/blob/main/LICENSE.txt) file for details.
 

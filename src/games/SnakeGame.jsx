@@ -159,28 +159,11 @@ const SnakeGame = ({ walletAddress }) => {
         const prizeFraction = score * 0.00001; // 0.001% = score * 0.00001
         const prizeAmount = ethers.parseEther(prizeFraction.toString());
 
-        // Ensure minimum prize of 0.0001 ETH and maximum of 0.1 ETH
-        // const clampedPrizeAmount =
-        //   prizeAmount < ethers.parseEther("0.0001")
-        //     ? ethers.parseEther("0.0001")
-        //     : prizeAmount > ethers.parseEther("0.1")
-        //     ? ethers.parseEther("0.1")
-        //     : prizeAmount;
-
         // Pay the winner
         const payTx = await contract.payWinner(walletAddress, prizeAmount);
         await payTx.wait();
 
-        // Alert with exact prize amount
-
         alert(`Congratulations! You won MNT!`);
-
-        // If score is high (more than 50), mint a special NFT
-        // if (score > 50) {
-        //   const mintTx = await contract.mintWinningNFT(1);
-        //   await mintTx.wait();
-        //   alert("High score! Special NFT minted!");
-        // }
       } else {
         setGameStatus("lost");
       }
@@ -320,16 +303,16 @@ const SnakeGame = ({ walletAddress }) => {
 
   return (
     <div
-      className="flex flex-col items-center justify-center min-h-screen bg-[#90e0ef]"
+      className="flex flex-col items-center justify-center min-h-screen bg-white text-black"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
       <div className="mb-4">
-        <h1 className="text-3xl font-bold text-[#03045e]">
+        <h1 className="text-3xl font-bold text-gray-900">
           Blockchain Snake Game
         </h1>
         {gameStatus === "playing" && (
-          <div className="text-xl mt-2 flex justify-between text-[#03045e]">
+          <div className="text-xl mt-2 flex justify-between text-gray-800">
             <span>
               Score: <span className="font-bold">{score}</span>
             </span>
@@ -341,27 +324,27 @@ const SnakeGame = ({ walletAddress }) => {
       </div>
 
       {!contract ? (
-        <div className="text-red-500 font-bold">
+        <div className="text-red-600 font-bold">
           Please connect wallet through Navbar
         </div>
       ) : gameStatus === "waiting" ? (
         <button
           onClick={startGame}
-          className="bg-[#0077b6] hover:bg-[#003049] text-[#90e0ef] font-bold py-2 px-4 rounded"
+          className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
         >
           Pay Entry Fee & Start Game
         </button>
       ) : (
         <>
           {(gameStatus === "lost" || gameStatus === "won") && (
-            <div className="absolute z-10 bg-[#0077b6] p-6 rounded-lg shadow-xl text-center">
-              <h2 className="text-2xl font-bold text-[#90e0ef] mb-4">
+            <div className="absolute z-10 bg-gray-800 p-6 rounded-lg shadow-xl text-center">
+              <h2 className="text-2xl font-bold text-white mb-4">
                 {gameStatus === "won" ? "Congratulations!" : "Game Over!"}
               </h2>
-              <p className="mb-4 text-[#90e0ef]">Final Score: {score}</p>
+              <p className="mb-4 text-white">Final Score: {score}</p>
               <button
                 onClick={resetGame}
-                className="bg-[#003049] hover:bg-[#002439] text-[#90e0ef] font-bold py-2 px-4 rounded"
+                className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
               >
                 Play Again
               </button>
@@ -369,11 +352,11 @@ const SnakeGame = ({ walletAddress }) => {
           )}
 
           <div
-            className="relative border-4 border-[#0077b6]"
+            className="relative border-4 border-gray-800"
             style={{
               width: `${BOARD_PIXEL_WIDTH + 4}px`,
               height: `${BOARD_PIXEL_HEIGHT + 4}px`,
-              backgroundColor: "#90e0ef",
+              backgroundColor: "#f4f4f4",
             }}
           >
             {/* Snake segments */}
@@ -381,7 +364,7 @@ const SnakeGame = ({ walletAddress }) => {
               <div
                 key={index}
                 className={`absolute ${
-                  index === 0 ? "bg-[#0077b6]" : "bg-[#003049]"
+                  index === 0 ? "bg-gray-900" : "bg-gray-700"
                 }`}
                 style={{
                   width: `${CELL_SIZE}px`,
@@ -394,7 +377,7 @@ const SnakeGame = ({ walletAddress }) => {
 
             {/* Food */}
             <div
-              className="absolute bg-[#d00000]"
+              className="absolute bg-red-600"
               style={{
                 width: `${CELL_SIZE}px`,
                 height: `${CELL_SIZE}px`,
@@ -406,7 +389,7 @@ const SnakeGame = ({ walletAddress }) => {
         </>
       )}
 
-      <div className="mt-4 text-sm text-[#03045e]">
+      <div className="mt-4 text-sm text-gray-800">
         <p>Use Arrow Keys or Swipe to Control the Snake</p>
         <p>Aim for high score within 60 seconds!</p>
       </div>

@@ -39,10 +39,21 @@ export const GAMES = [
   {
     id: 5,
     title: "Candy Sweeper",
-    description: "Challenge your reflexes in a thrilling ping pong game.",
+    description:
+      "Test your reflexes and strategic thinking in a fast-paced candy-themed minesweeper game.",
     cost: "6 Tokens",
     rewards: "Unique NFTs and 60 Tokens",
     image: "/CandyVsBomb1.gif",
     url: "/games/candy-minesweeper",
+  },
+  {
+    id: 6,
+    title: "Chess Master",
+    description:
+      "Sharpen your mind and strategy in this classic chess game against the computer.",
+    cost: "8 Tokens",
+    rewards: "Exclusive NFTs and 80 Tokens",
+    image: "/ChessGame.gif",
+    url: "/games/chess",
   },
 ];

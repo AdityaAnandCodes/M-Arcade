@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,12 +6,11 @@ import {
   useLocation,
 } from "react-router-dom";
 import Games from "./pages/Games";
-import Home2 from "./pages/Home2";
+import Home from "./pages/Home";
 import MemoryMatch from "./games/MemoryMatch";
 import ProceduralMazeGame from "./games/Maze";
 import SnakeGame from "./games/SnakeGame";
 import PingPongGame from "./games/PingPong";
-import NFT from "./pages/NFT";
 import CandyMinesweeper from "./games/CandySweeper";
 import Navbar from "./components/Navbar";
 import Leaderboard from "./pages/LeaderBoard";
@@ -38,7 +37,7 @@ const AppContent = ({ walletAddress, handleWalletAddressUpdate }) => {
         <Navbar onWalletAddressUpdate={handleWalletAddressUpdate} />
       )}
       <Routes>
-        <Route path="/" element={<Home2 />} />
+        <Route path="/" element={<Home />} />
         <Route
           path="/games"
           element={<Games walletAddress={walletAddress} />}
@@ -47,7 +46,6 @@ const AppContent = ({ walletAddress, handleWalletAddressUpdate }) => {
           path="/leaderboard"
           element={<Leaderboard walletAddress={walletAddress} />}
         />
-        <Route path="/nft" element={<NFT walletAddress={walletAddress} />} />
         <Route
           path="/games/memory-match"
           element={<MemoryMatch walletAddress={walletAddress} />}

@@ -162,19 +162,19 @@ const Navbar = ({ onWalletAddressUpdate }) => {
           } sm:flex flex-col md:ml-24 sm:flex-row gap-10 max-sm:gap-2 justify-center items-center font-bold text-sm sm:text-base md:text-lg absolute sm:relative left-0 w-full sm:w-auto bg-black sm:bg-transparent p-4 max-sm:z-20 sm:p-0 top-full sm:top-0`}
         >
           <Link to="/">
-            <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
+            <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black max-sm:hover:text-white">
               <Circle className={`w-3 h-3 ${isActive("/")}`} />
               Home
             </div>
           </Link>
           <Link to="/games">
-            <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
+            <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black max-sm:hover:text-white">
               <Circle className={`w-3 h-3 ${isActive("/games")}`} />
               Games
             </div>
           </Link>
           <Link to="/leaderboard">
-            <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
+            <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black max-sm:hover:text-white">
               <Circle className={`w-3 h-3 ${isActive("/leaderboard")}`} />
               Leaderboard
             </div>
@@ -214,7 +214,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
               </>
             ) : (
               <div className="flex gap-2 max-sm:hidden">
-                <div className="p-2 px-3 rounded-3xl border border-green-500 text-sm sm:text-base md:text-lg text-green-500">
+                <div className="p-2 px-3 rounded-3xl border border-black text-sm sm:text-base md:text-lg text-black hover:bg-black hover:text-white duration-500 transition-all">
                   {`Connected: ${walletAddress.slice(
                     0,
                     6

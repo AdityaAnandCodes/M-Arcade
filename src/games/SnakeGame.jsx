@@ -69,9 +69,7 @@ const SnakeGame = ({ walletAddress }) => {
       const entryFee = ethers.parseEther("0.01");
 
       try {
-        const tx = await contract.enterGame(ethers.parseUnits("10", 0), {
-          value: entryFee,
-        });
+        const tx = await contract.enterGame(entryFee, { value: entryFee });
         await tx.wait(); // Wait for transaction confirmation
 
         alert("Entry fee paid. Starting the game!");
@@ -94,7 +92,7 @@ const SnakeGame = ({ walletAddress }) => {
           setTimeLeft((prev) => {
             if (prev <= 1) {
               clearInterval(timerRef.current);
-              handleGameEnd(false);
+              handleGameEnd(true);
               return 0;
             }
             return prev - 1;
@@ -146,27 +144,24 @@ const SnakeGame = ({ walletAddress }) => {
         setGameStatus("won");
 
         // Calculate prize amount (0.01% of score)
-        const prizeFraction = score * 0.0001; // 0.01% = score * 0.0001
+        const prizeFraction = score * 0.00001; // 0.001% = score * 0.00001
         const prizeAmount = ethers.parseEther(prizeFraction.toString());
 
         // Ensure minimum prize of 0.0001 ETH and maximum of 0.1 ETH
-        const clampedPrizeAmount =
-          prizeAmount < ethers.parseEther("0.0001")
-            ? ethers.parseEther("0.0001")
-            : prizeAmount > ethers.parseEther("0.1")
-            ? ethers.parseEther("0.1")
-            : prizeAmount;
+        // const clampedPrizeAmount =
+        //   prizeAmount < ethers.parseEther("0.0001")
+        //     ? ethers.parseEther("0.0001")
+        //     : prizeAmount > ethers.parseEther("0.1")
+        //     ? ethers.parseEther("0.1")
+        //     : prizeAmount;
 
         // Pay the winner
-        const payTx = await contract.payWinner(
-          walletAddress,
-          clampedPrizeAmount
-        );
+        const payTx = await contract.payWinner(walletAddress, prizeAmount);
         await payTx.wait();
 
         // Alert with exact prize amount
-        const prizeInEth = ethers.formatEther(clampedPrizeAmount);
-        alert(`Congratulations! You won ${prizeInEth} ETH!`);
+
+        alert(`Congratulations! You won MNT!`);
 
         // If score is high (more than 50), mint a special NFT
         // if (score > 50) {

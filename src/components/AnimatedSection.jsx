@@ -46,7 +46,7 @@ const AnimatedSection = () => {
     tl.fromTo(
       revealElement,
       { clipPath: 'circle(0% at 50% 50%)' },
-      { clipPath: 'circle(150% at 50% 50%)', duration: 5 }
+      { clipPath: 'circle(150% at 50% 50%)', duration: 4 }
     );
 
     // Text animation

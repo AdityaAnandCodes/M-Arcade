@@ -15,7 +15,7 @@ const MemoryMatch = ({ walletAddress }) => {
   const [contract, setContract] = useState(null);
 
   const MAX_MOVES = 50;
-  const TOTAL_TIME = 120;
+  const TOTAL_TIME = 60;
 
   // Initialize contract on component mount
   useEffect(() => {
@@ -111,7 +111,7 @@ const MemoryMatch = ({ walletAddress }) => {
     try {
       if (won) {
         // Define prize amount
-        const prizeAmount = ethers.parseEther("0.01");
+        const prizeAmount = ethers.parseEther("0.02");
 
         // Pay the winner
         const payTx = await contract.payWinner(walletAddress, prizeAmount);

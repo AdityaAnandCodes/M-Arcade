@@ -189,7 +189,7 @@ const ProceduralMazeGame = ({ walletAddress }) => {
       ) : gameStatus === "waiting" ? (
         <button
           onClick={startGame}
-          className="px-4 py-2 bg-black text-white rounded hover:bg-neutral-800"
+          className="px-4 py-2 bg-black text-white rounded hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
         >
           Pay Entry Fee & Start Game
         </button>

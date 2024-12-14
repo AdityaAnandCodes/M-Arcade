@@ -205,7 +205,7 @@ const MemoryMatch = ({ walletAddress }) => {
             <div className="text-center">
               <button
                 onClick={startGame}
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                className="px-4 py-2 bg-black text-white rounded hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
               >
                 Pay Entry Fee & Start Game
               </button>

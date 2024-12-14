@@ -187,7 +187,7 @@ const CandyMineSweeper = ({ walletAddress }) => {
         ) : gameStatus === "waiting" ? (
           <button
             onClick={startGame}
-            className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            className="w-full px-4 py-2 bg-black text-white rounded hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
           >
             Pay Entry Fee & Start Game
           </button>

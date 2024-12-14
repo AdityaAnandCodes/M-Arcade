@@ -145,7 +145,7 @@ const CandyMineSweeper = ({ walletAddress }) => {
       setGameStatus("won");
 
       // Define the prize amount
-      const prizeAmount = ethers.parseEther("0.01");
+      const prizeAmount = ethers.parseEther("0.02");
 
       // Pay the winner
       const payTx = await contract.payWinner(walletAddress, prizeAmount);

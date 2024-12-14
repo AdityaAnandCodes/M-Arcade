@@ -134,7 +134,7 @@ const ProceduralMazeGame = ({ walletAddress }) => {
 
           try {
             // Define the prize amount
-            const prizeAmount = ethers.parseEther("0.01"); // Example: 0.05 ETH
+            const prizeAmount = ethers.parseEther("0.02"); // Example: 0.05 ETH
 
             // Pay the winner
             const payTx = await contract.payWinner(walletAddress, prizeAmount);
@@ -142,7 +142,7 @@ const ProceduralMazeGame = ({ walletAddress }) => {
             alert("Congratulations! Prize Transferred!");
 
             // If won within 15 seconds, mint an additional NFT
-            if (timeLeft > 1) {
+            if (timeLeft > 15) {
               const mintTx = await contract.mintWinningNFT(1);
               await mintTx.wait();
               alert("You won within 15 seconds! Special NFT minted!");

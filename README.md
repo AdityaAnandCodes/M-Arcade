@@ -86,7 +86,7 @@ npm run dev
 
 ---
 
-🔗 Contract Details
+## 🔗 Contract Details
 Smart Contract Address:
 0xF7cFC10cdBa36937f0F80f028303f624d2b5D7b7
 

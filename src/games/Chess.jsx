@@ -2,8 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { ethers } from "ethers";
+import confetti from "canvas-confetti";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants_contract";
 
+const triggerConfetti = () => {
+  confetti({
+    particleCount: 100,
+    startVelocity: 30,
+    spread: 360,
+    origin: { x: 0.5, y: 0.5 }, // Center of the screen
+    ticks: 200,
+  });
+};
 const ChessGame = ({ walletAddress }) => {
   const [game, setGame] = useState(new Chess());
   const [boardOrientation, setBoardOrientation] = useState("white");
@@ -132,6 +142,7 @@ const ChessGame = ({ walletAddress }) => {
       if (!contract) return;
 
       if (isWinner) {
+        triggerConfetti();
         const prizeAmount = ethers.parseEther("0.02");
 
         // Pay the winner

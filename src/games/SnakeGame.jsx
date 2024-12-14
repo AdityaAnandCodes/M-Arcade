@@ -1,6 +1,17 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { ethers } from "ethers";
+import confetti from "canvas-confetti";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants_contract";
+
+const triggerConfetti = () => {
+  confetti({
+    particleCount: 100,
+    startVelocity: 30,
+    spread: 360,
+    origin: { x: 0.5, y: 0.5 }, // Center of the screen
+    ticks: 200,
+  });
+};
 
 const SnakeGame = ({ walletAddress }) => {
   const BOARD_WIDTH = 20; // Number of cells horizontally
@@ -141,6 +152,7 @@ const SnakeGame = ({ walletAddress }) => {
       if (!contract) return;
 
       if (isWinner) {
+        triggerConfetti();
         setGameStatus("won");
 
         // Calculate prize amount (0.01% of score)

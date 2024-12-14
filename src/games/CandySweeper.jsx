@@ -1,6 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ethers } from "ethers";
+import confetti from "canvas-confetti";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants_contract";
+
+const triggerConfetti = () => {
+  confetti({
+    particleCount: 100,
+    startVelocity: 30,
+    spread: 360,
+    origin: { x: 0.5, y: 0.5 }, // Center of the screen
+    ticks: 200,
+  });
+};
 
 const generateBoard = () => {
   const totalSquares = 16;
@@ -145,6 +156,7 @@ const CandyMineSweeper = ({ walletAddress }) => {
       setGameStatus("won");
 
       // Define the prize amount
+      triggerConfetti();
       const prizeAmount = ethers.parseEther("0.02");
 
       // Pay the winner

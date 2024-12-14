@@ -27,6 +27,7 @@ const AppContent = ({ walletAddress, handleWalletAddressUpdate }) => {
     "/games/candy-minesweeper",
     "/games/ping-pong",
     "/games/snake",
+    "/games/chess",
   ];
 
   const showNavbar = !noNavbarRoutes.includes(location.pathname);
@@ -51,7 +52,10 @@ const AppContent = ({ walletAddress, handleWalletAddressUpdate }) => {
           path="/games/memory-match"
           element={<MemoryMatch walletAddress={walletAddress} />}
         />
-        <Route path="/games/chess" element={<ChessGame />} />
+        <Route
+          path="/games/chess"
+          element={<ChessGame walletAddress={walletAddress} />}
+        />
         <Route
           path="/games/maze"
           element={<ProceduralMazeGame walletAddress={walletAddress} />}

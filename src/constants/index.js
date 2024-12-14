@@ -52,7 +52,7 @@ export const GAMES = [
     description:
       "Sharpen your mind and strategy in this classic chess game against the computer.",
     cost: "0.01 MNT",
-    rewards: "0.02 MNT + Special NFT",
+    rewards: "0.02 MNT ",
     image: "/KingsClash.gif",
     url: "/games/chess",
   },

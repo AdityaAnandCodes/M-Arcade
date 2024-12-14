@@ -179,6 +179,23 @@ const Navbar = ({ onWalletAddressUpdate }) => {
               Leaderboard
             </div>
           </Link>
+           {!isWalletConnected ? (
+              <div className="md:hidden flex gap-2 max-sm:flex-col text-black ">
+                <input
+                  type="text"
+                  placeholder="Enter your name"
+                  value={playerName}
+                  onChange={(e) => setPlayerName(e.target.value)}
+                  className="p-2 border rounded-md max-sm:mb-2"
+                />
+                <button
+                  onClick={connectWalletAndRegister}
+                  className="p-2 px-3 text-white rounded-3xl border border-white text-sm sm:text-base md:text-lg hover:bg-black hover:text-white hover:scale-105 duration-300 transition-all w-full sm:w-auto"
+                >
+                  Connect Wallet
+                </button>
+              </div>
+            ) : (
           <div className="flex gap-2 max-sm:flex-col md:hidden">
                 <div className="p-2 px-3 rounded-3xl border border-green-500 text-sm sm:text-base md:text-lg text-green-500">
                   {`Connected: ${walletAddress.slice(
@@ -193,9 +210,10 @@ const Navbar = ({ onWalletAddressUpdate }) => {
                   Disconnect
                 </button>
               </div>
+          )}
           </div>
           <div>
-          <div className="flex flex-col sm:flex-row gap-2 items-center max-sm:w-full">
+          <div className="flex flex-col sm:flex-row gap-2 items-center max-sm:w-full max-sm:hidden">
             {!isWalletConnected ? (
               <>
                 <input

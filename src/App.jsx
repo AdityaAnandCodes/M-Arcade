@@ -15,6 +15,7 @@ import NFT from "./pages/NFT";
 import CandyMinesweeper from "./games/CandySweeper";
 import Navbar from "./components/Navbar";
 import Leaderboard from "./pages/LeaderBoard";
+import ChessGame from "./games/Chess";
 
 const AppContent = ({ walletAddress, handleWalletAddressUpdate }) => {
   const location = useLocation(); // Get the current route
@@ -50,6 +51,7 @@ const AppContent = ({ walletAddress, handleWalletAddressUpdate }) => {
           path="/games/memory-match"
           element={<MemoryMatch walletAddress={walletAddress} />}
         />
+        <Route path="/games/chess" element={<ChessGame />} />
         <Route
           path="/games/maze"
           element={<ProceduralMazeGame walletAddress={walletAddress} />}

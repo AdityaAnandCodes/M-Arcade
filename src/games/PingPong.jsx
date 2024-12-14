@@ -96,19 +96,18 @@ const PingPongGame = ({ walletAddress }) => {
     try {
       if (won) {
         // Define prize amount
-        const prizeAmount = ethers.parseEther("0.05");
+        const prizeAmount = ethers.parseEther("0.02");
 
         // Pay the winner
         const payTx = await contract.payWinner(walletAddress, prizeAmount);
         await payTx.wait();
         alert("Congratulations! Prize Transferred!");
 
-        // Mint special NFT if won without losing a point
-        // if (computerScore === 0) {
-        //   const mintTx = await contract.mintWinningNFT(2);
-        //   await mintTx.wait();
-        //   alert("Perfect game! Special NFT minted!");
-        // }
+        if (computerScore === 0) {
+          const mintTx = await contract.mintWinningNFT(1);
+          await mintTx.wait();
+          alert("Perfect game! Special NFT minted!");
+        }
       }
     } catch (error) {
       console.error("Error during NFT or payment processing:", error);

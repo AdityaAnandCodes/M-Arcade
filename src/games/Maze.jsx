@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { ethers, parseEther } from "ethers";
+import { ethers } from "ethers";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants_contract";
 
 const generateMaze = (width, height) => {

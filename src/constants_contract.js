@@ -232,6 +232,12 @@ export const CONTRACT_ABI = [
         name: "tokenId",
         type: "uint256",
       },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "metadataIndex",
+        type: "uint256",
+      },
     ],
     name: "NFTMinted",
     type: "event",
@@ -423,6 +429,25 @@ export const CONTRACT_ABI = [
     inputs: [
       {
         internalType: "address",
+        name: "player",
+        type: "address",
+      },
+    ],
+    name: "getPlayerNFTs",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "owner",
         type: "address",
       },
@@ -447,7 +472,7 @@ export const CONTRACT_ABI = [
     inputs: [
       {
         internalType: "uint256",
-        name: "tokenId",
+        name: "metadataIndex",
         type: "uint256",
       },
     ],
@@ -464,6 +489,19 @@ export const CONTRACT_ABI = [
         internalType: "string",
         name: "",
         type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "nextTokenId",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -536,6 +574,30 @@ export const CONTRACT_ABI = [
     name: "payWinner",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "playerNFTs",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -720,25 +782,6 @@ export const CONTRACT_ABI = [
     inputs: [
       {
         internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "tokenMinted",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
         name: "tokenId",
         type: "uint256",
       },
@@ -803,4 +846,4 @@ export const CONTRACT_ABI = [
   },
 ];
 
-export const CONTRACT_ADDRESS = "0x934834A1ee868ac95dD14C20A97313B372df3F9A";
+export const CONTRACT_ADDRESS = "0xF7cFC10cdBa36937f0F80f028303f624d2b5D7b7";

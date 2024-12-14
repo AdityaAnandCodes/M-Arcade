@@ -159,7 +159,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
         <div
           className={`${
             isMobileMenuOpen ? "flex text-white" : "hidden"
-          } sm:flex flex-col sm:flex-row gap-10 justify-center items-center font-bold text-sm sm:text-base md:text-lg absolute sm:relative left-0 w-full sm:w-auto bg-black sm:bg-transparent p-4 max-sm:z-20 sm:p-0 top-full sm:top-0`}
+          } sm:flex flex-col sm:flex-row gap-10 max-sm:gap-2 justify-center items-center font-bold text-sm sm:text-base md:text-lg absolute sm:relative left-0 w-full sm:w-auto bg-black sm:bg-transparent p-4 max-sm:z-20 sm:p-0 top-full sm:top-0`}
         >
           <Link to="/">
             <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">
@@ -179,6 +179,22 @@ const Navbar = ({ onWalletAddressUpdate }) => {
               Leaderboard
             </div>
           </Link>
+          <div className="flex gap-2 max-sm:flex-col md:hidden">
+                <div className="p-2 px-3 rounded-3xl border border-green-500 text-sm sm:text-base md:text-lg text-green-500">
+                  {`Connected: ${walletAddress.slice(
+                    0,
+                    6
+                  )}...${walletAddress.slice(-4)}`}
+                </div>
+                <button
+                  onClick={disconnectWallet}
+                  className="p-2 px-3 rounded-3xl border border-red-500 text-red-500 text-sm sm:text-base md:text-lg w-full sm:w-auto hover:bg-red-500 hover:text-white transition-all duration-300"
+                >
+                  Disconnect
+                </button>
+              </div>
+          </div>
+          <div>
           <div className="flex flex-col sm:flex-row gap-2 items-center max-sm:w-full">
             {!isWalletConnected ? (
               <>
@@ -197,7 +213,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
                 </button>
               </>
             ) : (
-              <>
+              <div className="flex gap-2 max-sm:hidden">
                 <div className="p-2 px-3 rounded-3xl border border-green-500 text-sm sm:text-base md:text-lg text-green-500">
                   {`Connected: ${walletAddress.slice(
                     0,
@@ -210,7 +226,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
                 >
                   Disconnect
                 </button>
-              </>
+              </div>
             )}
           </div>
         </div>

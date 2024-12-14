@@ -198,31 +198,32 @@ const ChessGame = ({ walletAddress }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-4xl">
-        <div className="flex justify-between mb-4">
-          <h1 className="text-2xl font-bold">Blockchain Chess</h1>
+        <div className="flex max-sm:flex-col justify-between md:items-center mb-4">
+          <h1 className="text-2xl font-bold text-center md:text-3xl">Blockchain Chess</h1>
 
-          {gameStatus === "waiting" && (
-            <div className="flex space-x-4">
-              <select
-                value={boardOrientation}
-                onChange={(e) => setBoardOrientation(e.target.value)}
-                className="px-4 py-2 bg-white border border-gray-300 rounded-md"
-              >
-                <option value="white">Play as White</option>
-                <option value="black">Play as Black</option>
-              </select>
+{gameStatus === "waiting" && (
+  <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 justify-center items-center mt-4">
+    <select
+      value={boardOrientation}
+      onChange={(e) => setBoardOrientation(e.target.value)}
+      className="w-full md:w-auto px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="white">Play as White</option>
+      <option value="black">Play as Black</option>
+    </select>
 
-              <select
-                value={difficulty}
-                onChange={(e) => setDifficulty(e.target.value)}
-                className="px-4 py-2 bg-white border border-gray-300 rounded-md"
-              >
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-              </select>
-            </div>
-          )}
+    <select
+      value={difficulty}
+      onChange={(e) => setDifficulty(e.target.value)}
+      className="w-full md:w-auto px-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+  </div>
+)}
+
         </div>
 
         {!contract ? (

@@ -159,7 +159,7 @@ const Navbar = ({ onWalletAddressUpdate }) => {
         <div
           className={`${
             isMobileMenuOpen ? "flex text-white" : "hidden"
-          } sm:flex flex-col sm:flex-row gap-10 max-sm:gap-2 justify-center items-center font-bold text-sm sm:text-base md:text-lg absolute sm:relative left-0 w-full sm:w-auto bg-black sm:bg-transparent p-4 max-sm:z-20 sm:p-0 top-full sm:top-0`}
+          } sm:flex flex-col md:ml-24 sm:flex-row gap-10 max-sm:gap-2 justify-center items-center font-bold text-sm sm:text-base md:text-lg absolute sm:relative left-0 w-full sm:w-auto bg-black sm:bg-transparent p-4 max-sm:z-20 sm:p-0 top-full sm:top-0`}
         >
           <Link to="/">
             <div className="flex gap-2 justify-center items-center transition-all duration-300 hover:scale-110 hover:text-black">

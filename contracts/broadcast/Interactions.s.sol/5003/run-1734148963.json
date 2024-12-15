@@ -1,0 +1,52 @@
+{
+  "transactions": [
+    {
+      "hash": "0xf689ed775d30416d9485a31e9e20524eabed909adbd2a119a36eab95e1d10e89",
+      "transactionType": "CALL",
+      "contractName": "MArcade",
+      "contractAddress": "0x934834a1ee868ac95dd14c20a97313b372df3f9a",
+      "function": "withdrawFunds()",
+      "arguments": [],
+      "transaction": {
+        "from": "0x1925d9e43164d5afe96314ee706948b5cbb3e637",
+        "to": "0x934834a1ee868ac95dd14c20a97313b372df3f9a",
+        "gas": "0xb3152f4",
+        "value": "0x0",
+        "input": "0x24600fc3",
+        "nonce": "0x90",
+        "chainId": "0x138b"
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [
+    {
+      "status": "0x1",
+      "cumulativeGasUsed": "0x669df40",
+      "logs": [],
+      "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "type": "0x2",
+      "transactionHash": "0xf689ed775d30416d9485a31e9e20524eabed909adbd2a119a36eab95e1d10e89",
+      "transactionIndex": "0x1",
+      "blockHash": "0x811e01fd83162bbfda08e130b1d8cb7e445066b00f94c005251b55fcb472c771",
+      "blockNumber": "0xf8c03e",
+      "gasUsed": "0x6692817",
+      "effectiveGasPrice": "0x1c9c380",
+      "from": "0x1925d9e43164d5afe96314ee706948b5cbb3e637",
+      "to": "0x934834a1ee868ac95dd14c20a97313b372df3f9a",
+      "contractAddress": null,
+      "l1Fee": "0x15dc711f81bb4",
+      "l1FeeScalar": "0.01",
+      "l1GasPrice": "0x16988ba83",
+      "l1GasUsed": "0x7fc",
+      "tokenRatio": "0xc1e"
+    }
+  ],
+  "libraries": [],
+  "pending": [],
+  "returns": {},
+  "timestamp": 1734148963,
+  "chain": 5003,
+  "commit": null
+}

@@ -309,7 +309,7 @@ const SnakeGame = ({ walletAddress }) => {
     >
       <div className="mb-4">
         <h1 className="text-3xl font-bold text-gray-900">
-          Blockchain Snake Game
+          Snake Snack
         </h1>
         {gameStatus === "playing" && (
           <div className="text-xl mt-2 flex justify-between text-gray-800">

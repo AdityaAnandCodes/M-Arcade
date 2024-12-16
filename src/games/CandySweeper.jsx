@@ -190,7 +190,7 @@ const CandyMineSweeper = ({ walletAddress }) => {
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-white text-black font-sans">
       <div className="w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-4">
-          Blockchain Candy Minesweeper
+          Candy MineSweeper
         </h1>
 
         {!contract ? (

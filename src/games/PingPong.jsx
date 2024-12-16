@@ -346,7 +346,7 @@ const PingPongGame = ({ walletAddress }) => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black">
-      <h1 className="text-3xl font-bold mb-4">Ping Pong Game</h1>
+      <h1 className="text-3xl font-bold mb-4">Ping Pong Pro</h1>
 
       {gameStatus !== "waiting" && (
         <div className="mb-4 text-2xl">

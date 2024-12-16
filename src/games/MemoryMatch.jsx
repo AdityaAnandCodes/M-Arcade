@@ -206,7 +206,7 @@ const MemoryMatch = ({ walletAddress }) => {
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg">
         <div className="p-6">
           <h1 className="text-2xl font-bold mb-4 text-center">
-            Memory Matching Game
+            Memory Match
           </h1>
 
           {!contract ? (

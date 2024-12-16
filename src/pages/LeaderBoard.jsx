@@ -153,10 +153,10 @@ const Leaderboard = ({ walletAddress }) => {
       {leaderboard.length === 0 && (
         <div className="text-center py-10 bg-gray-50">
           <div className="mb-4 flex justify-center opacity-50">
-            <Medal className="w-16 h-16 text-gray-400" />
+            <Medal className="w-16 h-16 text-gray-400 animate-pulse" />
           </div>
           <p className="text-gray-500 text-sm">
-            Connect Wallet to View Leaderboards.
+            Loading... or Connect Wallet to View Leaderboards.
           </p>
         </div>
       )}

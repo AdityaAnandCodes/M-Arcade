@@ -15,6 +15,7 @@ import CandyMinesweeper from "./games/CandySweeper";
 import Navbar from "./components/Navbar";
 import Leaderboard from "./pages/LeaderBoard";
 import ChessGame from "./games/Chess";
+import FloatingGameButton from "./components/FloatingGameButton";
 
 const AppContent = ({ walletAddress, handleWalletAddressUpdate }) => {
   const location = useLocation(); // Get the current route
@@ -36,6 +37,7 @@ const AppContent = ({ walletAddress, handleWalletAddressUpdate }) => {
       {showNavbar && (
         <Navbar onWalletAddressUpdate={handleWalletAddressUpdate} />
       )}
+      <FloatingGameButton />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route

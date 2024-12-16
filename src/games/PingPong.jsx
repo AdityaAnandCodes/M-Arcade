@@ -53,11 +53,11 @@ const PingPongGame = ({ walletAddress }) => {
     const handleResize = () => {
       const isMobileDevice = window.innerWidth < 768;
       setIsMobile(isMobileDevice);
-      
+
       if (gameAreaRef.current) {
         const maxWidth = Math.min(window.innerWidth * 0.9, 600);
         const maxHeight = Math.min(window.innerHeight * 0.6, 400);
-        
+
         setGameDimensions({
           width: maxWidth,
           height: maxHeight,
@@ -66,8 +66,8 @@ const PingPongGame = ({ walletAddress }) => {
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Mobile touch controls
@@ -84,8 +84,11 @@ const PingPongGame = ({ walletAddress }) => {
       const touch = e.touches[0];
       const gameRect = gameAreaRef.current.getBoundingClientRect();
       const relativeY = touch.clientY - gameRect.top;
-      const paddlePos = Math.max(0, Math.min(gameDimensions.height - PADDLE_HEIGHT, relativeY));
-      setPaddlePosition(prev => ({ ...prev, player: paddlePos }));
+      const paddlePos = Math.max(
+        0,
+        Math.min(gameDimensions.height - PADDLE_HEIGHT, relativeY)
+      );
+      setPaddlePosition((prev) => ({ ...prev, player: paddlePos }));
     };
 
     const handleTouchEnd = () => {
@@ -94,16 +97,16 @@ const PingPongGame = ({ walletAddress }) => {
 
     const gameArea = gameAreaRef.current;
     if (gameArea) {
-      gameArea.addEventListener('touchstart', handleTouchStart);
-      gameArea.addEventListener('touchmove', handleTouchMove);
-      gameArea.addEventListener('touchend', handleTouchEnd);
+      gameArea.addEventListener("touchstart", handleTouchStart);
+      gameArea.addEventListener("touchmove", handleTouchMove);
+      gameArea.addEventListener("touchend", handleTouchEnd);
     }
 
     return () => {
       if (gameArea) {
-        gameArea.removeEventListener('touchstart', handleTouchStart);
-        gameArea.removeEventListener('touchmove', handleTouchMove);
-        gameArea.removeEventListener('touchend', handleTouchEnd);
+        gameArea.removeEventListener("touchstart", handleTouchStart);
+        gameArea.removeEventListener("touchmove", handleTouchMove);
+        gameArea.removeEventListener("touchend", handleTouchEnd);
       }
     };
   }, [isMobile, gameDimensions.height]);
@@ -235,11 +238,14 @@ const PingPongGame = ({ walletAddress }) => {
       setPaddlePosition((prev) => {
         const computerPaddleCenter = prev.computer + PADDLE_HEIGHT / 2;
         const speed = PADDLE_SPEED * 0.6; // Slightly slower than player
-        
+
         if (computerPaddleCenter < ballPosition.y) {
           return {
             ...prev,
-            computer: Math.min(prev.computer + speed, gameDimensions.height - PADDLE_HEIGHT),
+            computer: Math.min(
+              prev.computer + speed,
+              gameDimensions.height - PADDLE_HEIGHT
+            ),
           };
         } else {
           return {
@@ -276,13 +282,17 @@ const PingPongGame = ({ walletAddress }) => {
           newX = PADDLE_WIDTH;
           setBallVelocity((prev) => ({
             x: Math.abs(prev.x),
-            y: prev.y + (newY - (paddlePosition.player + PADDLE_HEIGHT / 2)) * 0.2,
+            y:
+              prev.y +
+              (newY - (paddlePosition.player + PADDLE_HEIGHT / 2)) * 0.2,
           }));
         } else if (isComputerPaddleCollision) {
           newX = gameDimensions.width - PADDLE_WIDTH - BALL_SIZE;
           setBallVelocity((prev) => ({
             x: -Math.abs(prev.x),
-            y: prev.y + (newY - (paddlePosition.computer + PADDLE_HEIGHT / 2)) * 0.2,
+            y:
+              prev.y +
+              (newY - (paddlePosition.computer + PADDLE_HEIGHT / 2)) * 0.2,
           }));
         }
 
@@ -325,16 +335,25 @@ const PingPongGame = ({ walletAddress }) => {
         window.removeEventListener("keyup", handleKeyUp);
       }
     };
-  }, [gameStatus, ballPosition, ballVelocity, paddlePosition, isMobile, gameDimensions]);
+  }, [
+    gameStatus,
+    ballPosition,
+    ballVelocity,
+    paddlePosition,
+    isMobile,
+    gameDimensions,
+  ]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black">
       <h1 className="text-3xl font-bold mb-4">Ping Pong Game</h1>
 
-      {gameStatus !== "waiting" && (<div className="mb-4 text-2xl">
-        <span className="mr-4">Player: {playerScore}</span>
-        <span>Computer: {computerScore}</span>
-      </div>)}
+      {gameStatus !== "waiting" && (
+        <div className="mb-4 text-2xl">
+          <span className="mr-4">Player: {playerScore}</span>
+          <span>Computer: {computerScore}</span>
+        </div>
+      )}
 
       {!contract ? (
         <div className="text-red-500 font-bold text-center">
@@ -342,22 +361,22 @@ const PingPongGame = ({ walletAddress }) => {
         </div>
       ) : gameStatus === "waiting" ? (
         <>
-            <div className="bg-gray-50 p-6 rounded-lg w-96 shadow-sm border border-gray-200 mb-4">
-              <h2 className="text-xl font-semibold mb-4">Game Details</h2>
-              <div className="space-y-3 text-gray-600">
-                <p>🎮 Entry Fee: 0.01 MNT</p>
-                <p>🏆 Potential Prize: 0.02 NFT</p>
-                <p>⭐ Special NFT for quick wins!</p>
-              </div>
+          <div className="bg-gray-50 p-6 rounded-lg w-96 shadow-sm border border-gray-200 mb-4">
+            <h2 className="text-xl font-semibold mb-4">Game Details</h2>
+            <div className="space-y-3 text-gray-600">
+              <p>🎮 Entry Fee: 0.01 MNT</p>
+              <p>🏆 Potential Prize: 0.02 MNT</p>
+              <p>⭐ Special NFT for quick wins!</p>
             </div>
+          </div>
 
-            <button
-              onClick={startGame}
-              className="w-96 px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
-            >
-              Pay Entry Fee & Start Game
-            </button>
-          </>
+          <button
+            onClick={startGame}
+            className="w-96 px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-neutral-800 hover:scale-105 duration-500 transition-all"
+          >
+            Pay Entry Fee & Start Game
+          </button>
+        </>
       ) : (
         <div
           ref={gameAreaRef}
@@ -409,7 +428,11 @@ const PingPongGame = ({ walletAddress }) => {
       )}
 
       <div className="mt-4 text-center text-gray-700">
-        <p>{isMobile ? "Touch and drag to move your paddle" : "Use Arrow Up and Arrow Down to move your paddle"}</p>
+        <p>
+          {isMobile
+            ? "Touch and drag to move your paddle"
+            : "Use Arrow Up and Arrow Down to move your paddle"}
+        </p>
         <p>First to score 10 points wins!</p>
       </div>
     </div>

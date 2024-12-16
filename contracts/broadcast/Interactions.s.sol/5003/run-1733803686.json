@@ -1,0 +1,52 @@
+{
+  "transactions": [
+    {
+      "hash": "0xcc0cee193d897317454f2c0ecef078a6f91fa957f800007289ebe39ea6194813",
+      "transactionType": "CALL",
+      "contractName": "SlotMachineNFT",
+      "contractAddress": "0x3a61f5fceb7bc1ca5701771fae47076cd5be1c57",
+      "function": "withdrawFunds()",
+      "arguments": [],
+      "transaction": {
+        "from": "0x1925d9e43164d5afe96314ee706948b5cbb3e637",
+        "to": "0x3a61f5fceb7bc1ca5701771fae47076cd5be1c57",
+        "gas": "0xbbcd7b8",
+        "value": "0x0",
+        "input": "0x24600fc3",
+        "nonce": "0x21",
+        "chainId": "0x138b"
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [
+    {
+      "status": "0x1",
+      "cumulativeGasUsed": "0x6a90efd",
+      "logs": [],
+      "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "type": "0x2",
+      "transactionHash": "0xcc0cee193d897317454f2c0ecef078a6f91fa957f800007289ebe39ea6194813",
+      "transactionIndex": "0x1",
+      "blockHash": "0x840c0d86db206142e795ed8e94b99db16b3e32af689681f56bf31d09e2e5a323",
+      "blockNumber": "0xf61ddf",
+      "gasUsed": "0x6a857d4",
+      "effectiveGasPrice": "0x2625a00",
+      "from": "0x1925d9e43164d5afe96314ee706948b5cbb3e637",
+      "to": "0x3a61f5fceb7bc1ca5701771fae47076cd5be1c57",
+      "contractAddress": null,
+      "l1Fee": "0x11843adaee278",
+      "l1FeeScalar": "0.01",
+      "l1GasPrice": "0x1088e082d",
+      "l1GasUsed": "0x7f4",
+      "tokenRatio": "0xd52"
+    }
+  ],
+  "libraries": [],
+  "pending": [],
+  "returns": {},
+  "timestamp": 1733803686,
+  "chain": 5003,
+  "commit": null
+}

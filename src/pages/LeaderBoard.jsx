@@ -156,7 +156,7 @@ const Leaderboard = ({ walletAddress }) => {
             <Medal className="w-16 h-16 text-gray-400" />
           </div>
           <p className="text-gray-500 text-sm">
-            No players in the leaderboard yet
+            Connect Wallet to View Leaderboards.
           </p>
         </div>
       )}

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../constants_contract";
+import { Medal,Award, ChevronUp, ChevronDown } from "lucide-react";
 
 const Leaderboard = ({ walletAddress }) => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [contract, setContract] = useState(null);
+  const [showFullLeaderboard, setShowFullLeaderboard] = useState(false);
 
   useEffect(() => {
     const initializeContract = async () => {
@@ -74,30 +76,65 @@ const Leaderboard = ({ walletAddress }) => {
     fetchLeaderboard();
   }, [contract]);
 
+  // Determine display leaderboard based on state
+  const displayLeaderboard = showFullLeaderboard 
+    ? leaderboard 
+    : leaderboard.slice(0, 8);
+
   return (
-    <div className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow-md max-w-md mx-auto">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Leaderboard</h2>
-      <table className="table-auto border-collapse border border-gray-200 w-full">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border px-4 py-2 text-left">Rank</th>
-            <th className="border px-4 py-2 text-left">Player</th>
-            <th className="border px-4 py-2 text-left">Wins</th>
-          </tr>
-        </thead>
-        <tbody>
-          {leaderboard.map((player, index) => (
-            <tr
-              key={index}
-              className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
-            >
-              <td className="border px-4 py-2">{index + 1}</td>
-              <td className="border px-4 py-2">{player.name}</td>
-              <td className="border px-4 py-2">{player.wins}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="w-full max-w-md mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden border border-gray-200">
+      <div className="bg-black text-white px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <Award className="w-8 h-8 text-yellow-400" />
+          <h2 className="text-2xl font-bold tracking-tight">Leaderboard</h2>
+        </div>
+        {leaderboard.length > 8 && (
+          <button 
+            onClick={() => setShowFullLeaderboard(!showFullLeaderboard)}
+            className="text-sm text-gray-300 hover:text-white flex items-center"
+          >
+            {showFullLeaderboard ? (
+              <>
+                Collapse <ChevronUp className="ml-1 w-4 h-4" />
+              </>
+            ) : (
+              <>
+                View All <ChevronDown className="ml-1 w-4 h-4" />
+              </>
+            )}
+          </button>
+        )}
+      </div>
+
+      <div className="divide-y divide-gray-200">
+        {displayLeaderboard.map((player, index) => (
+          <div 
+            key={index} 
+            className={`
+              px-6 py-4 flex items-center justify-between
+              ${index === 0 ? 'bg-yellow-50' : 'bg-white'}
+              hover:bg-gray-50 transition-colors duration-200
+            `}
+          >
+            <div className="flex items-center space-x-4">
+              <span className="font-semibold text-gray-700 w-8">
+                {index + 1}
+                {index === 0 && (
+  <span className="ml-2 inline-block align-middle relative -top-0.5 text-yellow-500">👑</span>
+)}
+              </span>
+              <span className="font-medium text-gray-800">{player.name}</span>
+            </div>
+            <span className="font-bold text-black">{player.wins}</span>
+          </div>
+        ))}
+      </div>
+
+      {leaderboard.length === 0 && (
+        <div className="text-center py-6 text-gray-500">
+          No players in the leaderboard yet
+        </div>
+      )}
     </div>
   );
 };
